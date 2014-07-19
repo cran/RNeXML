@@ -228,7 +228,7 @@ tr &lt;- get_trees(nexml) # or: as(nexml, &quot;phylo&quot;)
 plot(tr)
 </code></pre>
 
-<p><img src="http://i.imgur.com/6zXHeRK.png" alt="plot of chunk unnamed-chunk-4"/> </p>
+<p><img src="http://i.imgur.com/Qagiczk.png" alt="plot of chunk unnamed-chunk-4"/> </p>
 
 <p>Write an <code>ape::phylo</code> tree into the <code>nexml</code> format:</p>
 
@@ -354,6 +354,8 @@ get_taxa(birds)
 <h3>Taxonomic identifiers</h3>
 
 <p>Add taxonomic identifier metadata to the OTU elements:</p>
+
+<!-- This block relies on a robust internet connection that can occassionally fail.  Also it's a bit slow, so don't run it. After all, this command is tested in the unit tests.-->
 
 <pre><code class="r">nex &lt;- add_trees(bird.orders)
 nex &lt;- taxize_nexml(nex)

@@ -3,9 +3,9 @@
 library(methods)
 library(knitr)
 opts_chunk$set(cache = 1)
-basename <- gsub(".Rmd", "", knitr:::knit_concord$get('infile')) 
-opts_chunk$set(fig.path = paste("components/figure/", basename, "-", sep=""),
-               cache.path = paste("components/cache/", basename, "/", sep=""))
+basename <- 'tutorial' 
+opts_chunk$set(fig.path = paste("figure/", basename, "-", sep=""),
+               cache.path = paste("cache/", basename, "/", sep=""))
 
 
 
@@ -73,9 +73,9 @@ website <- meta(href = "http://carlboettiger.info",
                              foaf = "http://xmlns.com/foaf/0.1/"))
 
 
-## ------------------------------------------------------------------------
-nex <- add_trees(bird.orders)
-nex <- taxize_nexml(nex)
+## ----eval=FALSE----------------------------------------------------------
+#  nex <- add_trees(bird.orders)
+#  nex <- taxize_nexml(nex)
 
 ## ------------------------------------------------------------------------
 library(RNeXML)

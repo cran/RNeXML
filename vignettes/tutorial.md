@@ -47,7 +47,7 @@ tr <- get_trees(nexml) # or: as(nexml, "phylo")
 plot(tr)
 ```
 
-![plot of chunk unnamed-chunk-4](http://i.imgur.com/6zXHeRK.png) 
+![plot of chunk unnamed-chunk-4](http://i.imgur.com/Qagiczk.png) 
 
 Write an `ape::phylo` tree into the `nexml` format:
 
@@ -203,7 +203,7 @@ Once we have created the `meta` elements, we can pass them to our `nexml_write` 
 ### Taxonomic identifiers
 
 Add taxonomic identifier metadata to the OTU elements:
-
+<!-- This block relies on a robust internet connection that can occassionally fail.  Also it's a bit slow, so don't run it. After all, this command is tested in the unit tests.-->
 
 
 ```r
