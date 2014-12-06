@@ -47,7 +47,7 @@ tr <- get_trees(nexml) # or: as(nexml, "phylo")
 plot(tr)
 ```
 
-![plot of chunk unnamed-chunk-4](http://i.imgur.com/b0BFv2V.png) 
+![plot of chunk unnamed-chunk-4](http://i.imgur.com/KO6zPPg.png) 
 
 Write an `ape::phylo` tree into the `nexml` format:
 
@@ -69,7 +69,7 @@ nexml_validate("test.xml")
 ```
 
 ```
-NULL
+[1] TRUE
 ```
 
 
@@ -144,28 +144,28 @@ RNeXML:::nexml_namespaces
 ```
 
 ```
-                                                     nex 
-                             "http://www.nexml.org/2009" 
-                                                     xsi 
-             "http://www.w3.org/2001/XMLSchema-instance" 
-                                                     xml 
-                  "http://www.w3.org/XML/1998/namespace" 
-                                                    cdao 
-"http://www.evolutionaryontology.org/cdao/1.0/cdao.owl#" 
-                                                     xsd 
-                     "http://www.w3.org/2001/XMLSchema#" 
-                                                      dc 
-                      "http://purl.org/dc/elements/1.1/" 
-                                                 dcterms 
-                             "http://purl.org/dc/terms/" 
-                                                   prism 
-        "http://prismstandard.org/namespaces/1.2/basic/" 
-                                                      cc 
-                        "http://creativecommons.org/ns#" 
-                                                    ncbi 
-                 "http://www.ncbi.nlm.nih.gov/taxonomy#" 
-                                                      tc 
-         "http://rs.tdwg.org/ontology/voc/TaxonConcept#" 
+                                             nex 
+                     "http://www.nexml.org/2009" 
+                                             xsi 
+     "http://www.w3.org/2001/XMLSchema-instance" 
+                                             xml 
+          "http://www.w3.org/XML/1998/namespace" 
+                                            cdao 
+       "http://purl.obolibrary.org/obo/cdao.owl" 
+                                             xsd 
+             "http://www.w3.org/2001/XMLSchema#" 
+                                              dc 
+              "http://purl.org/dc/elements/1.1/" 
+                                         dcterms 
+                     "http://purl.org/dc/terms/" 
+                                           prism 
+"http://prismstandard.org/namespaces/1.2/basic/" 
+                                              cc 
+                "http://creativecommons.org/ns#" 
+                                            ncbi 
+         "http://www.ncbi.nlm.nih.gov/taxonomy#" 
+                                              tc 
+ "http://rs.tdwg.org/ontology/voc/TaxonConcept#" 
 ```
 
 This next block defines a resource (link), described by the `rel` attribute as a homepage, a term in the `foaf` vocabulalry.  Becuase `foaf` is not a default namespace, we will have to provide its URL in the full definition below. 
@@ -185,15 +185,19 @@ Here we create a history node using the `skos` namespace.  We can also add id va
                   id = "meta123")
 ```
 
-Once we have created the `meta` elements, we can pass them to our `nexml_write` function, along with definitions of the namespaces.  
+For this kind of richer annotation, it is best to build up our NeXML object sequentially. Frist
+we will add `bird.orders` phylogeny to a new phylogenetic object, and then we will add the metadata
+elements created above to this object. Finally, we will write the object out as an XML file:
 
 
 ```r
-  nexml_write(bird.orders, 
-              file = "example.xml", 
-              meta = list(history, modified, website), 
-              namespaces = c(skos = "http://www.w3.org/2004/02/skos/core#",
-                             foaf = "http://xmlns.com/foaf/0.1/"))
+  birds <- add_trees(bird.orders)
+  birds <- add_meta(meta = list(history, modified, website),
+                    namespaces = c(skos = "http://www.w3.org/2004/02/skos/core#",
+                                   foaf = "http://xmlns.com/foaf/0.1/"),
+                    nexml=birds)
+  nexml_write(birds, 
+              file = "example.xml")
 ```
 
 ```
@@ -270,9 +274,9 @@ fitDiscrete(tree, traits[2], ncores=1)
 ```
 GEIGER-fitted comparative model of discrete data
  fitted Q matrix:
-             0        1
-    0 -0.07308  0.07308
-    1  0.07308 -0.07308
+                0           1
+    0 -0.07308302  0.07308302
+    1  0.07308302 -0.07308302
 
  model summary:
 	log-likelihood = -4.574133
@@ -295,4 +299,10 @@ Convergence diagnostics:
 
 
 
+
+
+
+-----
+
+[![ropensci footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
 

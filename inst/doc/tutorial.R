@@ -66,11 +66,14 @@ website <- meta(href = "http://carlboettiger.info",
                   id = "meta123")
 
 ## ------------------------------------------------------------------------
-  nexml_write(bird.orders, 
-              file = "example.xml", 
-              meta = list(history, modified, website), 
-              namespaces = c(skos = "http://www.w3.org/2004/02/skos/core#",
-                             foaf = "http://xmlns.com/foaf/0.1/"))
+  birds <- add_trees(bird.orders)
+  birds <- add_meta(meta = list(history, modified, website),
+                    namespaces = c(skos = "http://www.w3.org/2004/02/skos/core#",
+                                   foaf = "http://xmlns.com/foaf/0.1/"),
+                    nexml=birds)
+  nexml_write(birds, 
+              file = "example.xml")
+              
 
 
 ## ----eval=FALSE----------------------------------------------------------

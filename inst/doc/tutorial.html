@@ -5,6 +5,18 @@
 
 <title>RNeXML: The next-generation phylogenetics format comes to R</title>
 
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
 <!-- Styles for R syntax highlighter -->
 <style type="text/css">
    pre .operator,
@@ -45,9 +57,6 @@ var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/<
 hljs.initHighlightingOnLoad();
 </script>
 
-<!-- MathJax scripts -->
-<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 
 
 <style type="text/css">
@@ -99,7 +108,9 @@ a:visited {
 pre, img {
   max-width: 100%;
 }
-
+pre {
+  overflow-x: auto;
+}
 pre code {
    display: block; padding: 0.5em;
 }
@@ -228,7 +239,7 @@ tr &lt;- get_trees(nexml) # or: as(nexml, &quot;phylo&quot;)
 plot(tr)
 </code></pre>
 
-<p><img src="http://i.imgur.com/b0BFv2V.png" alt="plot of chunk unnamed-chunk-4"/> </p>
+<p><img src="http://i.imgur.com/KO6zPPg.png" alt="plot of chunk unnamed-chunk-4"/> </p>
 
 <p>Write an <code>ape::phylo</code> tree into the <code>nexml</code> format:</p>
 
@@ -244,7 +255,7 @@ nexml_write(bird.orders, &quot;test.xml&quot;)
 <pre><code class="r">nexml_validate(&quot;test.xml&quot;)
 </code></pre>
 
-<pre><code>NULL
+<pre><code>[1] TRUE
 </code></pre>
 
 <p>Extract metadata from the NeXML file: </p>
@@ -302,28 +313,28 @@ get_taxa(birds)
 <pre><code class="r">RNeXML:::nexml_namespaces
 </code></pre>
 
-<pre><code>                                                     nex 
-                             &quot;http://www.nexml.org/2009&quot; 
-                                                     xsi 
-             &quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
-                                                     xml 
-                  &quot;http://www.w3.org/XML/1998/namespace&quot; 
-                                                    cdao 
-&quot;http://www.evolutionaryontology.org/cdao/1.0/cdao.owl#&quot; 
-                                                     xsd 
-                     &quot;http://www.w3.org/2001/XMLSchema#&quot; 
-                                                      dc 
-                      &quot;http://purl.org/dc/elements/1.1/&quot; 
-                                                 dcterms 
-                             &quot;http://purl.org/dc/terms/&quot; 
-                                                   prism 
-        &quot;http://prismstandard.org/namespaces/1.2/basic/&quot; 
-                                                      cc 
-                        &quot;http://creativecommons.org/ns#&quot; 
-                                                    ncbi 
-                 &quot;http://www.ncbi.nlm.nih.gov/taxonomy#&quot; 
-                                                      tc 
-         &quot;http://rs.tdwg.org/ontology/voc/TaxonConcept#&quot; 
+<pre><code>                                             nex 
+                     &quot;http://www.nexml.org/2009&quot; 
+                                             xsi 
+     &quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+                                             xml 
+          &quot;http://www.w3.org/XML/1998/namespace&quot; 
+                                            cdao 
+       &quot;http://purl.obolibrary.org/obo/cdao.owl&quot; 
+                                             xsd 
+             &quot;http://www.w3.org/2001/XMLSchema#&quot; 
+                                              dc 
+              &quot;http://purl.org/dc/elements/1.1/&quot; 
+                                         dcterms 
+                     &quot;http://purl.org/dc/terms/&quot; 
+                                           prism 
+&quot;http://prismstandard.org/namespaces/1.2/basic/&quot; 
+                                              cc 
+                &quot;http://creativecommons.org/ns#&quot; 
+                                            ncbi 
+         &quot;http://www.ncbi.nlm.nih.gov/taxonomy#&quot; 
+                                              tc 
+ &quot;http://rs.tdwg.org/ontology/voc/TaxonConcept#&quot; 
 </code></pre>
 
 <p>This next block defines a resource (link), described by the <code>rel</code> attribute as a homepage, a term in the <code>foaf</code> vocabulalry.  Becuase <code>foaf</code> is not a default namespace, we will have to provide its URL in the full definition below. </p>
@@ -339,13 +350,17 @@ get_taxa(birds)
                   id = &quot;meta123&quot;)
 </code></pre>
 
-<p>Once we have created the <code>meta</code> elements, we can pass them to our <code>nexml_write</code> function, along with definitions of the namespaces.  </p>
+<p>For this kind of richer annotation, it is best to build up our NeXML object sequentially. Frist
+we will add <code>bird.orders</code> phylogeny to a new phylogenetic object, and then we will add the metadata
+elements created above to this object. Finally, we will write the object out as an XML file:</p>
 
-<pre><code class="r">  nexml_write(bird.orders, 
-              file = &quot;example.xml&quot;, 
-              meta = list(history, modified, website), 
-              namespaces = c(skos = &quot;http://www.w3.org/2004/02/skos/core#&quot;,
-                             foaf = &quot;http://xmlns.com/foaf/0.1/&quot;))
+<pre><code class="r">  birds &lt;- add_trees(bird.orders)
+  birds &lt;- add_meta(meta = list(history, modified, website),
+                    namespaces = c(skos = &quot;http://www.w3.org/2004/02/skos/core#&quot;,
+                                   foaf = &quot;http://xmlns.com/foaf/0.1/&quot;),
+                    nexml=birds)
+  nexml_write(birds, 
+              file = &quot;example.xml&quot;)
 </code></pre>
 
 <pre><code>[1] &quot;example.xml&quot;
@@ -411,9 +426,9 @@ Convergence diagnostics:
 
 <pre><code>GEIGER-fitted comparative model of discrete data
  fitted Q matrix:
-             0        1
-    0 -0.07308  0.07308
-    1  0.07308 -0.07308
+                0           1
+    0 -0.07308302  0.07308302
+    1  0.07308302 -0.07308302
 
  model summary:
     log-likelihood = -4.574133
@@ -432,6 +447,10 @@ Convergence diagnostics:
     &#39;res&#39; -- optimization iteration summary
     &#39;opt&#39; -- maximum likelihood parameter estimates
 </code></pre>
+
+<hr/>
+
+<p><a href="http://ropensci.org"><img src="http://ropensci.org/public_images/github_footer.png" alt="ropensci footer"/></a></p>
 
 </body>
 
