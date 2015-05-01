@@ -1,13 +1,11 @@
 context("character matrices")
 
 
-require(RNeXML) # make sure the package is loaded first...
 ## All tests will use this data file
 f <- system.file("examples", "comp_analysis.xml", package="RNeXML")
 
 test_that("we can parse XML to S4 and serialize S4 to XML for the basic character classes", {
 
-  require(XML)
   doc <- xmlParse(f)
   root <- xmlRoot(doc)
 

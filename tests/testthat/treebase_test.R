@@ -3,10 +3,6 @@
 # This test assumes the working directory contains all the XML files provided 
 # here: https://github.com/rvosa/supertreebase/tree/master/data/treebase
 
-library(devtools)
-install_github("RNeXML", "ropensci")
-require(RNeXML)
-require(XML)
 files <- system("ls *.xml", intern=TRUE)
 
 print("testing parsing only")
