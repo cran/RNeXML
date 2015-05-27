@@ -1,7 +1,7 @@
 Package: RNeXML
 Type: Package
 Title: Semantically Rich I/O for the 'NeXML' Format
-Version: 2.0.2
+Version: 2.0.3
 Authors@R: c(person("Carl", "Boettiger", role = c("cre", "aut"),
     email="cboettig@gmail.com"), person("Scott", "Chamberlain", role =
     "aut"), person("Hilmar", "Lapp", role = "aut"), person("Kseniia",
@@ -18,7 +18,7 @@ Additional_repositories: http://www.omegahat.org/R,
 VignetteBuilder: knitr
 Suggests: rrdf (>= 2.0.2), geiger (>= 2.0), phytools (>= 0.3.93), knitr
         (>= 1.5), rfigshare (>= 0.3.0), knitcitations (>= 1.0.1),
-        testthat (>= 0.8.1), phylobase (>= 0.6.8), rmarkdown (>=
+        testthat (>= 0.10.0), phylobase (>= 0.6.8), rmarkdown (>=
         0.3.3), Sxslt (>= 0.91)
 Depends: R (>= 3.0.0), ape (>= 3.1), methods (>= 3.0.0)
 Imports: XML (>= 3.95), plyr (>= 1.8), taxize (>= 0.2.2), reshape2 (>=
@@ -34,7 +34,7 @@ Collate: 'classes.R' 'add_basic_meta.R' 'add_characters.R' 'add_meta.R'
         'nexml_read.R' 'nexml_validate.R' 'nexml_write.R' 'simmap.R'
         'taxize_nexml.R'
 NeedsCompilation: no
-Packaged: 2015-04-30 23:11:15 UTC; rstudio
+Packaged: 2015-05-25 19:35:00 UTC; rstudio
 Author: Carl Boettiger [cre, aut],
   Scott Chamberlain [aut],
   Hilmar Lapp [aut],
@@ -42,4 +42,4 @@ Author: Carl Boettiger [cre, aut],
   Rutger Vos [aut]
 Maintainer: Carl Boettiger <cboettig@gmail.com>
 Repository: CRAN
-Date/Publication: 2015-05-01 09:28:14
+Date/Publication: 2015-05-27 02:06:32

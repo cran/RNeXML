@@ -1,7 +1,7 @@
-d6632b61accd864facaa53c7e6765807 *DESCRIPTION
+8f0e8d06a92e118d98174eecf5c389de *DESCRIPTION
 15d87f8d4ecfd954c8dd3fc2b69a0cbb *LICENSE
 ed96d45876b78f9f9b111fc8f6bf9c49 *NAMESPACE
-a3ca68168dd21df31d5957742b8ad6a2 *NEWS
+6e5ab854aae9ee024c6c7a11da37413b *NEWS
 36d3f6e5d5e0c0e3e94f3f3d7218c56d *R/add_basic_meta.R
 b1acd21560ce746b3fa1e33346c1d4d9 *R/add_characters.R
 8a3742fe5e603f306cef2a96ae1e9b8e *R/add_meta.R
@@ -126,7 +126,7 @@ bddf914ab9ef8870a643c31ac8480687 *tests/testthat/test_parsing.R
 b2f45f32c7a38575e316204face86c60 *tests/testthat/test_publish.R
 de8c8e9f3d60a41e861a1ab091d72023 *tests/testthat/test_rdf.R
 cebc49fccf74e658b171651b18f06f9a *tests/testthat/test_serializing.R
-c4d0a563ed37adf0622e4329e5e9e4e5 *tests/testthat/test_simmap.R
+4ade8dd0f7398b99bcc1a6b1666efc23 *tests/testthat/test_simmap.R
 44d7506356931aae1de2d8f25802b7bb *tests/testthat/test_taxonomy.R
 f04b0dc0ea1ddf2637106f69183e3db9 *tests/testthat/test_toplevel_api.R
 4c6ba000905bdd7fca8a212b67159817 *tests/testthat/test_validate.R
