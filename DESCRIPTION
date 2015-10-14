@@ -1,7 +1,7 @@
 Package: RNeXML
 Type: Package
 Title: Semantically Rich I/O for the 'NeXML' Format
-Version: 2.0.3
+Version: 2.0.4
 Authors@R: c(person("Carl", "Boettiger", role = c("cre", "aut"),
     email="cboettig@gmail.com"), person("Scott", "Chamberlain", role =
     "aut"), person("Hilmar", "Lapp", role = "aut"), person("Kseniia",
@@ -34,7 +34,7 @@ Collate: 'classes.R' 'add_basic_meta.R' 'add_characters.R' 'add_meta.R'
         'nexml_read.R' 'nexml_validate.R' 'nexml_write.R' 'simmap.R'
         'taxize_nexml.R'
 NeedsCompilation: no
-Packaged: 2015-05-25 19:35:00 UTC; rstudio
+Packaged: 2015-10-13 19:55:08 UTC; cboettig
 Author: Carl Boettiger [cre, aut],
   Scott Chamberlain [aut],
   Hilmar Lapp [aut],
@@ -42,4 +42,4 @@ Author: Carl Boettiger [cre, aut],
   Rutger Vos [aut]
 Maintainer: Carl Boettiger <cboettig@gmail.com>
 Repository: CRAN
-Date/Publication: 2015-05-27 02:06:32
+Date/Publication: 2015-10-14 09:48:41
