@@ -21,9 +21,8 @@ setMethod("toNeXML",
           function(object, parent){
             type <- slot(object, "xsi:type")
             if(length(type) > 0){
-## FIXME Don't assume type should be `nex:` namespaced
-              if(is.na(pmatch("nex:", type)))
-                type <- paste0("nex:", type)
+              #if(is.na(pmatch("nex:", type)))  # nex or relevant namespace should come from default anyway
+              #  type <- paste0("nex:", type)
               addAttributes(parent, 
                            "xsi:type" = type,  
                             suppressNamespaceWarning=TRUE) # We always define xsi namespace in the header... 
@@ -35,9 +34,9 @@ setMethod("fromNeXML",
           function(obj, from){
             if(!is.null(xmlAttrs(from))){
               if(!is.na(xmlAttrs(from)["type"]))  ## FIXME use [["type"]] or ["type"]
-                slot(obj, "xsi:type") <- xmlAttrs(from)["type"]
+                slot(obj, "xsi:type") <- as.character(xmlAttrs(from)["type"])
               if(!is.na(xmlAttrs(from)["xsi:type"])) ## Shouldn't be necessary but seems to be for first test in test_inheritance.R...
-                slot(obj, "xsi:type") <- xmlAttrs(from)["xsi:type"]
+                slot(obj, "xsi:type") <- as.character(xmlAttrs(from)["xsi:type"])
             }
             obj
           }
@@ -113,6 +112,8 @@ setMethod("fromNeXML",
             obj <- callNextMethod()
             attrs <- xmlAttrs(from)
             obj@href <- attrs[["href"]]
+            if(!is.na(attrs["id"]))
+              obj@id <- attrs[["id"]]
             if(!is.na(attrs[["rel"]]))
                  obj@rel <- attrs[["rel"]]
                obj
@@ -145,17 +146,14 @@ setAs("XMLInternalElementNode", "meta", function(from){
       if(is.na(type)) # if still not defined...
         fromNeXML(new("meta", from))
       else {
-        type <- gsub("nex:", "", type) ## FIXME This is CRUDE
+        type <- gsub(".*:", "", type) ## FIXME This is CRUDE
         fromNeXML(new(type[1]), from)
       }
 })
 
 setAs("meta", "XMLInternalElementNode", function(from){
       if(length( slot(from, "xsi:type") ) > 0 ){
-        if(slot(from, "xsi:type") %in% c("LiteralMeta", 
-                                         "ResourceMeta",
-                                         "nex:LiteralMeta", 
-                                         "nex:ResourceMeta"))
+        if(grepl("LiteralMeta|ResourceMeta", slot(from, "xsi:type")))
           m <- as(from, slot(from, "xsi:type"))
         }
       else
@@ -238,7 +236,7 @@ setMethod("fromNeXML",
           function(obj, from){
             obj <- callNextMethod()
             if(!is.na(xmlAttrs(from)["id"]))
-                 obj@id <- xmlAttrs(from)["id"]
+                 obj@id <- as.character(xmlAttrs(from)["id"])
                obj
           }
 )
@@ -263,7 +261,7 @@ setMethod("fromNeXML",
           function(obj, from){
             obj <- callNextMethod()
              if(!is.na(xmlAttrs(from)["otu"]))
-               obj@otu <- xmlAttrs(from)["otu"]       
+               obj@otu <- as.character(xmlAttrs(from)["otu"])
              obj
           }
 )
@@ -287,7 +285,7 @@ setMethod("fromNeXML",
           function(obj, from){
             obj <- callNextMethod()
              if(!is.na(xmlAttrs(from)["otus"]))
-               obj@otus <- xmlAttrs(from)["otus"]       
+               obj@otus <- as.character(xmlAttrs(from)["otus"])
              obj
           }
 )
@@ -657,9 +655,10 @@ setMethod("toNeXML",
             addChildren(parent, kids = object@characters) # a list of "characters" objects
             parent
           })
+
+## NOTE: The root nexml element must have it's namespace
 setAs("nexml", "XMLInternalNode",
       function(from) suppressWarnings(toNeXML(from, newXMLNode("nex:nexml", namespaceDefinitions = from@namespaces))))
-
 setAs("nexml", "XMLInternalElementNode",
       function(from) suppressWarnings(toNeXML(from, newXMLNode("nex:nexml", namespaceDefinitions = from@namespaces))))
 setAs("XMLInternalElementNode", "nexml",

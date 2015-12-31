@@ -5,55 +5,41 @@
 #' 
 #' get_metadata 
 #' @param nexml a nexml object
-#' @param level the name of the level of element desired, or
-#'  use "all" to access all meta elements.  
-#' @return the requested metadata
+#' @param level the name of the level of element desired, see details
+#' @return the requested metadata as a data.frame. Additional columns
+#' indicate tha parent element of the return value.
+#' @details 'level' should be either the name of a child element of a NeXML document 
+#' (e.g. "otu", "characters"), or a path to the desired element, e.g. 'trees/tree'
+#' will return the metadata for all phylogenies in all trees blocks.
 #' @import XML
-#' @examples
-#' comp_analysis <- system.file("examples", "comp_analysis.xml", package="RNeXML")
+#' @examples \dontrun{
+#' comp_analysis <- system.file("examples", "primates.xml", package="RNeXML")
 #' nex <- nexml_read(comp_analysis)
 #' get_metadata(nex)
+#' get_metadata(nex, "otus/otu")
+#' }
 #' @export
-get_metadata <-  function(nexml, level="nexml"){
-# c("nexml", "otus", "otu", "trees", "tree", "characters", "format", "states", "all")
-  #  level <- match.arg(level)  # Don't insist a match for more flexibilty.  
-  string <- paste0("//nex:", level, "/nex:meta" )
-  if(level == "all")
-    string <- paste0("//nex:meta")
-  b <- setxpath(as(nexml, "XMLInternalElementNode"))
+get_metadata <- function(nexml, level = "nexml"){
+  
+#  level = c("nexml", "otus", "trees", "characters", 
+#            "otus/otu", "trees/tree", "characters/format", "characters/matrix",
+#            "characters/format/states")
+#  level <- match.arg(level)
 
-  references <- getNodeSet(b, 
-                           paste0(string, "[@rel]"),
-                           namespaces = nexml_namespaces)
-  rel = sapply(references, 
-                    function(x) 
-                      xmlAttrs(x)['rel'])
-  href = sapply(references, 
-                   function(x) 
-                     xmlAttrs(x)['href'])
-  names(href) = rel
-  literals <- getNodeSet(b, 
-                         paste0(string, "[@property]"), 
-                         namespaces = nexml_namespaces)
-  property = sapply(literals, 
-                    function(x) 
-                      xmlAttrs(x)['property'])
-  content = sapply(literals, 
-                   function(x) 
-                     xmlAttrs(x)['content'])
-  names(content) = property
-  c(content, href)
+  ## Handle deprecated formats
+  if(level =="otu")
+    level <- "otus/otu"
+  if(level =="tree")
+    level <- "trees/tree"
+
+  
+  
+  if(level == "nexml")
+    level <- "meta"
+  else
+    level <- paste(level, "meta", sep="/") 
+ 
+  get_level(nexml, level)
+  
+
 }
-
-## Ironically, it is easier to extract the license from the XML representation using XPath than to extract it from the R S4 representation.  
-## Using newXMLDoc(object) leads invariably to segfaults....
-## safer to write out and parse.  
-setxpath <- function(object){
-            tmp <- tempfile()
-            suppressWarnings(saveXML(object, tmp))
-            doc <- xmlParse(tmp)
-            unlink(tmp)
-            doc
-}
-
-
