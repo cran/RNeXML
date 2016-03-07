@@ -1,7 +1,7 @@
-cc2971af9a50dc3ce5285b7e26a53d07 *DESCRIPTION
+2101c6176bb4e5a333ba07ca27b22434 *DESCRIPTION
 15d87f8d4ecfd954c8dd3fc2b69a0cbb *LICENSE
 c613e0d41aa888b6f2552cc25b9010a2 *NAMESPACE
-bbd60c642a93141beeb739229fd057e4 *NEWS
+2b26661341bbaa53ca3bf1324eeda759 *NEWS
 3240d3545cf0cc0efd813d2649d40926 *R/add_basic_meta.R
 40bece1f389a5a124ef19d214762e316 *R/add_characters.R
 8a3742fe5e603f306cef2a96ae1e9b8e *R/add_meta.R
@@ -30,9 +30,9 @@ a0eb07febda79bb9019c22cc1de272bf *R/nexmlTree.R
 eaf388a4f6baa30b25470711aae80073 *R/nexml_get.R
 543c0593bb8c0bf854f7637b0a578111 *R/nexml_methods.R
 a3ed5cf4bcd243452e87c95e78a84284 *R/nexml_publish.R
-e4760a439ed0aaa9c68c27afa2037f9c *R/nexml_read.R
+c15599dc6c9686b32952efe715b0af42 *R/nexml_read.R
 7274c2f0e7505424d7bcdc7b5ba3e07c *R/nexml_validate.R
-3065770b1040bc175c9b11de5662baac *R/nexml_write.R
+f7f02df61a764d23efcabc61fbc2044c *R/nexml_write.R
 f09917e2c28d50018d6e9b94c920fed7 *R/simmap.R
 7b7d400236ab6cfa6fe179224f9fa20c *R/taxize_nexml.R
 a86cc403e5fb51a37cbced0601468a01 *README.md
@@ -109,10 +109,10 @@ f8631c38b0a17cefd68d6dc837333d5d *man/get_trees_list.Rd
 86e03649975e3e304a4549d1b52ab0da *man/nexml_figshare.Rd
 effecba3da7f455df1e03e91650ab30c *man/nexml_get.Rd
 959776702ff1e5b6e68332679e146f2e *man/nexml_publish.Rd
-2b2540e934320180ffad5b002fff1ff2 *man/nexml_read.Rd
+621317a0b5a9f361cd3456ae4531b1e8 *man/nexml_read.Rd
 9dcccbaae20ba7d6bae820f92a55bdd6 *man/nexml_to_simmap.Rd
 97ee8f0a68a28953124ced7651d52aee *man/nexml_validate.Rd
-8bf1aa8b0c4da681d97439a6d3cde7f4 *man/nexml_write.Rd
+b572d80b8214325580b882615f2c69f5 *man/nexml_write.Rd
 9013924bda3ef2fa50a2ab2eaefcee5c *man/reset_id_counter.Rd
 3e0069cf908c01f5bf54456727bc9872 *man/simmap_ex.Rd
 f3d53e87bdf4d6492be6ce6a817acd34 *man/simmap_to_nexml.Rd
