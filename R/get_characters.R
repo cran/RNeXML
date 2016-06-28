@@ -12,7 +12,7 @@
 #'  and the NeXML char labels to name the traits (columns).  If these are unavailable or not unique, the NeXML
 #'  id values for the otus or traits will be used instead.
 #' @importFrom tidyr spread
-#' @importFrom dplyr left_join select_
+#' @importFrom dplyr left_join select_ matches
 #' @importFrom stringr str_replace
 #' @importFrom stats setNames
 #' @export
@@ -30,14 +30,14 @@
 #' }
 get_characters <- function(nex, rownames_as_col=FALSE, otu_id = FALSE, otus_id = FALSE){
   
-  drop = lazyeval::interp(~-matches(x), x="about|xsi.type|format")
+  drop = lazyeval::interp(~-dplyr::matches(x), x = "about|xsi.type|format")
   
   otus <- get_level(nex, "otus/otu") %>% 
-    select_(drop) %>%
+    dplyr::select_(drop) %>%
     optional_labels(id_col = "otu")
   
   char <- get_level(nex, "characters/format/char") %>% 
-    select_(drop) %>%
+    dplyr::select_(drop) %>%
     optional_labels(id_col = "char")
   
   ## Rows have otu information
