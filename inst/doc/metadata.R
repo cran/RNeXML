@@ -66,22 +66,40 @@ birds
 meta <- get_metadata(birds) 
 
 ## ------------------------------------------------------------------------
-names(meta)[1:4]
-
-## ------------------------------------------------------------------------
-meta[["dc:title"]]
-
-## ------------------------------------------------------------------------
-prefixes <- get_namespaces(birds)
-prefixes["dc"]
-
-## ----get_citation--------------------------------------------------------
-get_citation(birds)
+meta
 
 ## ----get_taxa------------------------------------------------------------
 get_taxa(birds)
 
 ## ------------------------------------------------------------------------
-otu_meta <- get_metadata(birds, level="otu")
-otu_meta[1:4]
+otu_meta <- get_metadata(birds, level="otus/otu")
+otu_meta
+
+## ------------------------------------------------------------------------
+library("RNeXML")
+library("dplyr")
+library("geiger")
+knitr::opts_chunk$set(message = FALSE, warning=FALSE, comment = NA)
+
+## ------------------------------------------------------------------------
+data("primates")
+add_trees(primates$phy) %>% 
+  add_characters(primates$dat, ., append=TRUE) %>% 
+  taxize_nexml() -> nex 
+
+## ------------------------------------------------------------------------
+otu_meta <- get_metadata(nex, "otus/otu")
+taxa <- get_taxa(nex)
+char <- get_characters(nex, rownames_as_col = TRUE)
+
+## ------------------------------------------------------------------------
+otu_meta
+taxa
+head(char)
+
+## ------------------------------------------------------------------------
+taxa %>% 
+  left_join(char, by = c("label" = "taxa")) %>% 
+  left_join(otu_meta, by = "otu") %>%
+  select(otu, label, x, href)
 
