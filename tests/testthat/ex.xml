@@ -1,0 +1,14 @@
+<nex:nexml xmlns:nex="http://www.nexml.org/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cdao="http://purl.obolibrary.org/obo/cdao.owl" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:ter="http://purl.org/dc/terms/" xmlns:prism="http://prismstandard.org/namespaces/1.2/basic/" xmlns:cc="http://creativecommons.org/ns#" xmlns:ncbi="http://www.ncbi.nlm.nih.gov/taxonomy#" xmlns:tc="http://rs.tdwg.org/ontology/voc/TaxonConcept#" xmlns="http://www.nexml.org/2009" version="0.9" generator="RNeXML">
+  <meta xsi:type="LiteralMeta" id="m4" property="dc:creator" datatype="xsd:string" content="rstudio"/>
+  <meta xsi:type="ResourceMeta" id="m5" href="http://creativecommons.org/publicdomain/zero/1.0/" rel="cc:license"/>
+  <meta xsi:type="LiteralMeta" id="m6" property="dcterms:bibliographicCitation" datatype="xsd:string"/>
+  <otus about="#os4" id="os4">
+    <otu about="#ou70" label="Strix_aluco" id="ou70"/>
+    <otu about="#ou71" label="Asio_otus" id="ou71"/>
+    <otu about="#ou72" label="Athene_noctua" id="ou72"/>
+    <otu about="#ou73" label="Tyto_alba" id="ou73"/>
+  </otus>
+  <trees about="#ts4" id="ts4" otus="os4">
+    <tree xsi:type="FloatTree" about="#tree4" id="tree4"/>
+  </trees>
+</nex:nexml>
