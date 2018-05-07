@@ -2,7 +2,7 @@
 library("methods")
 library("knitr")
 opts_chunk$set(tidy = FALSE, warning = FALSE, message = FALSE, 
-               cache = FALSE, comment = NA, verbose = TRUE)
+               cache = FALSE, comment = NA, verbose = TRUE, eval = require(rdflib))
 
 
 ## ----include=FALSE-------------------------------------------------------

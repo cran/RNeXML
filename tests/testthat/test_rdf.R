@@ -1,9 +1,12 @@
 context("rdf")
 
-library(rdflib)
+has_rdf <- require(rdflib)
 
 test_that("we can extract rdf-xml", {
 
+  skip_if_not(has_rdf)
+  skip_on_os("solaris")
+  
   rdf <- get_rdf(system.file("examples/primates.xml", package="RNeXML"))
   tmp <- tempfile()  # so we must write the XML out first
   xml2::write_xml(rdf, tmp) 
@@ -16,9 +19,10 @@ test_that("we can extract rdf-xml", {
   rdf_free(graph)
 })
 
-test_that("we can perform sparql queries with rrdf", {
+test_that("we can perform sparql queries with rdf", {
   skip_on_travis()
-
+  skip_on_os("solaris")
+  
   rdf <- get_rdf(system.file("examples/primates.xml", package="RNeXML"))
   tmp <- tempfile()  # so we must write the XML out first
   xml2::write_xml(rdf, tmp) 
