@@ -3,8 +3,7 @@ library("methods")
 library("knitr")
 opts_chunk$set(tidy = FALSE, warning = FALSE, message = FALSE, 
                cache = FALSE, comment = NA, verbose = TRUE)
-basename <- gsub(".Rmd", "", knitr:::knit_concord$get('infile')) 
-
+basename <- gsub(".Rmd", "", knitr:::knit_concord$get('infile'))
 
 ## ------------------------------------------------------------------------
 library('RNeXML')
@@ -36,8 +35,8 @@ birds <- add_basic_meta(
 ## ------------------------------------------------------------------------
 birds <- add_basic_meta(citation = citation("ape"), nexml = birds)
 
-## ----message=FALSE, results='hide'---------------------------------------
-birds <- taxize_nexml(birds, "NCBI")
+## ----message=FALSE, results='hide', eval=FALSE---------------------------
+#  birds <- taxize_nexml(birds, "NCBI")
 
 ## ------------------------------------------------------------------------
 prefixes <- get_namespaces(birds)
@@ -79,7 +78,6 @@ otu_meta
 library("RNeXML")
 library("dplyr")
 library("geiger")
-knitr::opts_chunk$set(message = FALSE, warning=FALSE, comment = NA)
 
 ## ------------------------------------------------------------------------
 data("primates")

@@ -9,13 +9,24 @@ birds <- taxize_nexml(birds, "NCBI")
 data(chiroptera)
 chiroptera_small <- drop.tip(chiroptera, tip = 1:906)
 chir <- add_trees(chiroptera_small)
-chir <- taxize_nexml(chir, "NCBI")
 chiroptera_super_small <- drop.tip(chiroptera, tip = 1:911)
 chir_super_small <- add_trees(chiroptera_super_small)
-chir_super_small <- taxize_nexml(chir_super_small, "NCBI")
+
+
+
+
 
 test_that("taxize_nexml correctly collects ncbi identifiers", {
+  
+  testthat::skip_on_cran()
+  
+  
+  chir <- taxize_nexml(chir, "NCBI")
+  chir_super_small <- taxize_nexml(chir_super_small, "NCBI")
+  
+  
   expect_is(birds@otus, "ListOfotus")
+  
   expect_is(birds@otus@.Data[[1]]@otu, "ListOfotu")
   expect_is(birds@otus@.Data[[1]]@otu[[1]], "otu")
   expect_is(birds@otus@.Data[[1]]@otu[[1]]@meta, "ListOfmeta")
@@ -41,6 +52,10 @@ test_that("we can extract taxonomy data from the object", {
 
 
 test_that("taxize_nexml throws appropriate warnings", {
+  
+  testthat::skip_on_cran()
+  
+  
   chir1 <- drop.tip(chiroptera, tip = 1:910)
   chir1 <- add_trees(chir1)
   expect_warning(taxize_nexml(chir1, "NCBI"))

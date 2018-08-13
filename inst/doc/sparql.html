@@ -22,46 +22,256 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 </head>
 
@@ -86,101 +296,101 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>SPARQL Queries</h2>
 <p>Rich, semantically meaningful metadata lies at the heart of the NeXML standard. R provides a rich environment to unlock this information. While our previous examples have relied on the user knowing exactly what metadata they intend to extract (title, publication date, citation information, and so forth), <em>semantic</em> metadata has meaning that a computer can make use of, allowing us to make much more conceptually rich queries than those simple examples. The SPARQL query language is a powerful way to make use of such semantic information in making complex queries.</p>
 <p>While users should consult a formal introduction to SPARQL for further background, here we illustrate how SPARQL can be used in combination with R functions in ways that would be much more tedious to assemble with only traditional/non-semantic queries. The SPARQL query language is provided for the R environment through the <code>rrdf</code> package <span class="citation">[@Willighagen_2014]</span>, so we start by loading that package. We will also make use of functions from <code>phytools</code> and <code>RNeXML</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;rdflib&quot;</span>)
-<span class="kw">library</span>(<span class="st">&quot;xml2&quot;</span>)
-<span class="kw">library</span>(<span class="st">&quot;phytools&quot;</span>)
-<span class="kw">library</span>(<span class="st">&quot;RNeXML&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;rdflib&quot;</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;xml2&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;phytools&quot;</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(<span class="st">&quot;RNeXML&quot;</span>)</a></code></pre></div>
 <p>We read in an example file that contains semantic metadata annotations describing the taxonomic units (OTUs) used in the tree.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nexml &lt;-<span class="st"> </span><span class="kw">nexml_read</span>(<span class="kw">system.file</span>(<span class="st">&quot;examples/primates.xml&quot;</span>, <span class="dt">package=</span><span class="st">&quot;RNeXML&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">nexml &lt;-<span class="st"> </span><span class="kw">nexml_read</span>(<span class="kw">system.file</span>(<span class="st">&quot;examples/primates.xml&quot;</span>, <span class="dt">package=</span><span class="st">&quot;RNeXML&quot;</span>))</a></code></pre></div>
 <p>In particular, this example declares the taxon rank, NCBI identifier and parent taxon for each OTU, such as:</p>
-<div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml"><span class="kw">&lt;otu</span><span class="ot"> about=</span><span class="st">&quot;#ou541&quot;</span><span class="ot"> id=</span><span class="st">&quot;ou541&quot;</span><span class="ot"> label=</span><span class="st">&quot;Alouatta guariba&quot;</span><span class="kw">&gt;</span>
-      <span class="kw">&lt;meta</span><span class="ot"> href=</span><span class="st">&quot;http://ncbi.nlm.nih.gov/taxonomy/182256&quot;</span> 
-<span class="ot">            id=</span><span class="st">&quot;ma20&quot;</span> 
-<span class="ot">            rel=</span><span class="st">&quot;concept:toTaxon&quot;</span> 
-<span class="ot">            xsi:type=</span><span class="st">&quot;nex:ResourceMeta&quot;</span><span class="kw">/&gt;</span>
-      <span class="kw">&lt;meta</span><span class="ot"> href=</span><span class="st">&quot;http://rs.tdwg.org/ontology/voc/TaxonRank#Species&quot;</span> 
-<span class="ot">            id=</span><span class="st">&quot;ma21&quot;</span> 
-<span class="ot">            rel=</span><span class="st">&quot;concept:rank&quot;</span> 
-<span class="ot">            xsi:type=</span><span class="st">&quot;nex:ResourceMeta&quot;</span><span class="kw">/&gt;</span>
-      <span class="kw">&lt;meta</span><span class="ot"> href=</span><span class="st">&quot;http://ncbi.nlm.nih.gov/taxonomy/9499&quot;</span> 
-<span class="ot">            id=</span><span class="st">&quot;ma22&quot;</span> 
-<span class="ot">            rel=</span><span class="st">&quot;rdfs:subClassOf&quot;</span> 
-<span class="ot">            xsi:type=</span><span class="st">&quot;nex:ResourceMeta&quot;</span><span class="kw">/&gt;</span>
-    <span class="kw">&lt;/otu&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode xml"><code class="sourceCode xml"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">&lt;otu</span><span class="ot"> about=</span><span class="st">&quot;#ou541&quot;</span><span class="ot"> id=</span><span class="st">&quot;ou541&quot;</span><span class="ot"> label=</span><span class="st">&quot;Alouatta guariba&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">      <span class="kw">&lt;meta</span><span class="ot"> href=</span><span class="st">&quot;http://ncbi.nlm.nih.gov/taxonomy/182256&quot;</span> </a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="ot">            id=</span><span class="st">&quot;ma20&quot;</span> </a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="ot">            rel=</span><span class="st">&quot;concept:toTaxon&quot;</span> </a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="ot">            xsi:type=</span><span class="st">&quot;nex:ResourceMeta&quot;</span><span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">      <span class="kw">&lt;meta</span><span class="ot"> href=</span><span class="st">&quot;http://rs.tdwg.org/ontology/voc/TaxonRank#Species&quot;</span> </a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="ot">            id=</span><span class="st">&quot;ma21&quot;</span> </a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="ot">            rel=</span><span class="st">&quot;concept:rank&quot;</span> </a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="ot">            xsi:type=</span><span class="st">&quot;nex:ResourceMeta&quot;</span><span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">      <span class="kw">&lt;meta</span><span class="ot"> href=</span><span class="st">&quot;http://ncbi.nlm.nih.gov/taxonomy/9499&quot;</span> </a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="ot">            id=</span><span class="st">&quot;ma22&quot;</span> </a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="ot">            rel=</span><span class="st">&quot;rdfs:subClassOf&quot;</span> </a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="ot">            xsi:type=</span><span class="st">&quot;nex:ResourceMeta&quot;</span><span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">    <span class="kw">&lt;/otu&gt;</span></a></code></pre></div>
 <p>In this example, we will construct a cladogram by using this information to identify the taxonomic rank of each OTU, and its shared parent taxonomic rank. (If this example looks complex, try writing down the steps to do this without the aid of the SPARQL queries). These examples show the manipulation of semantic triples, Unique Resource Identifiers (URIs) and use of the SPARQL “Join” operator.</p>
 <p>Note that this example can be run using <code>demo(&quot;sparql&quot;, &quot;RNeXML&quot;)</code> to see the code displayed in the R terminal and to avoid character errors that can occur in having to copy and paste from PDF files.</p>
 <p>We begin by extracting the RDF graph from the NeXML,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rdf &lt;-<span class="st"> </span><span class="kw">get_rdf</span>(<span class="kw">system.file</span>(<span class="st">&quot;examples/primates.xml&quot;</span>, <span class="dt">package=</span><span class="st">&quot;RNeXML&quot;</span>))
-tmp &lt;-<span class="st"> </span><span class="kw">tempfile</span>()  <span class="co"># so we must write the XML out first</span>
-xml2<span class="op">::</span><span class="kw">write_xml</span>(rdf, tmp) 
-
-graph &lt;-<span class="st"> </span><span class="kw">rdf_parse</span>(tmp)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">rdf &lt;-<span class="st"> </span><span class="kw">get_rdf</span>(<span class="kw">system.file</span>(<span class="st">&quot;examples/primates.xml&quot;</span>, <span class="dt">package=</span><span class="st">&quot;RNeXML&quot;</span>))</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">tempfile</span>()  <span class="co"># so we must write the XML out first</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">xml2<span class="op">::</span><span class="kw">write_xml</span>(rdf, tmp) </a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">graph &lt;-<span class="st"> </span><span class="kw">rdf_parse</span>(tmp)</a></code></pre></div>
 <p>We then fetch the NCBI URI for the taxon that has rank ‘Order’, i.e. the root of the primates phylogeny. The dot operator <code>.</code> between clauses implies a join, in this case</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">root &lt;-<span class="st"> </span><span class="kw">rdf_query</span>(graph, 
-<span class="st">&quot;SELECT ?uri WHERE { </span>
-<span class="st">    ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#rank&gt; &lt;http://rs.tdwg.org/ontology/voc/TaxonRank#Order&gt; . </span>
-<span class="st">    ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#toTaxon&gt; ?uri    </span>
-<span class="st">}&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">root &lt;-<span class="st"> </span><span class="kw">rdf_query</span>(graph, </a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">&quot;SELECT ?uri WHERE { </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">    ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#rank&gt; &lt;http://rs.tdwg.org/ontology/voc/TaxonRank#Order&gt; . </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">    ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#toTaxon&gt; ?uri    </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">}&quot;</span>)</a></code></pre></div>
 <p>This makes use of the SPARQL query language provided by the <code>rrdf</code> package. We will also define some helper functions that use SPARQL queries. Here we define a function to get the name</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_name &lt;-<span class="st"> </span><span class="cf">function</span>(id) {
-  max &lt;-<span class="st"> </span><span class="kw">length</span>(nexml<span class="op">@</span>otus[[<span class="dv">1</span>]]<span class="op">@</span>otu)
-  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>max) {
-    <span class="cf">if</span> ( nexml<span class="op">@</span>otus[[<span class="dv">1</span>]]<span class="op">@</span>otu[[i]]<span class="op">@</span>id <span class="op">==</span><span class="st"> </span>id ) {
-      label &lt;-<span class="st"> </span>nexml<span class="op">@</span>otus[[<span class="dv">1</span>]]<span class="op">@</span>otu[[i]]<span class="op">@</span>label
-      label &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;_&quot;</span>,label)
-      <span class="kw">return</span>(label)
-    }
-  }
-}</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">get_name &lt;-<span class="st"> </span><span class="cf">function</span>(id) {</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  max &lt;-<span class="st"> </span><span class="kw">length</span>(nexml<span class="op">@</span>otus[[<span class="dv">1</span>]]<span class="op">@</span>otu)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>max) {</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">    <span class="cf">if</span> ( nexml<span class="op">@</span>otus[[<span class="dv">1</span>]]<span class="op">@</span>otu[[i]]<span class="op">@</span>id <span class="op">==</span><span class="st"> </span>id ) {</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">      label &lt;-<span class="st"> </span>nexml<span class="op">@</span>otus[[<span class="dv">1</span>]]<span class="op">@</span>otu[[i]]<span class="op">@</span>label</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">      label &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;_&quot;</span>,label)</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">      <span class="kw">return</span>(label)</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">    }</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">  }</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">}</a></code></pre></div>
 <p>Next, we define a recursive function to build a newick tree from the taxonomic rank information.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recurse &lt;-<span class="st"> </span><span class="cf">function</span>(node){
-  
-    <span class="co"># fetch the taxonomic rank and id string</span>
-    rank_query &lt;-<span class="st"> </span><span class="kw">paste0</span>(
-        <span class="st">&quot;SELECT ?rank ?id WHERE {</span>
-<span class="st">            ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#toTaxon&gt; &lt;&quot;</span>,node,<span class="st">&quot;&gt; .</span>
-<span class="st">            ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#rank&gt; ?rank</span>
-<span class="st">          }&quot;</span>)
-    result &lt;-<span class="st"> </span><span class="kw">rdf_query</span>(graph, rank_query)
-    
-    <span class="co"># get the local ID, strip URI part</span>
-    id &lt;-<span class="st"> </span>result<span class="op">$</span>id
-    id &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;^.+#&quot;</span>, <span class="st">&quot;&quot;</span>, id, <span class="dt">perl =</span> <span class="ot">TRUE</span>)
-    
-    <span class="co"># if rank is terminal, return the name</span>
-    <span class="cf">if</span> (result<span class="op">$</span>rank <span class="op">==</span><span class="st"> &quot;http://rs.tdwg.org/ontology/voc/TaxonRank#Species&quot;</span>) {
-        <span class="kw">return</span>(<span class="kw">get_name</span>(id))
-    }
-    
-    <span class="co"># recurse deeper</span>
-    <span class="cf">else</span> {
-        child_query &lt;-<span class="st"> </span><span class="kw">paste0</span>(
-            <span class="st">&quot;SELECT ?uri WHERE {</span>
-<span class="st">                ?id &lt;http://www.w3.org/2000/01/rdf-schema#subClassOf&gt; &lt;&quot;</span>,node,<span class="st">&quot;&gt; .</span>
-<span class="st">                ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#toTaxon&gt; ?uri</span>
-<span class="st">            }&quot;</span>)
-        children &lt;-<span class="st"> </span><span class="kw">rdf_query</span>(graph, child_query)
-        
-        <span class="kw">return</span>(<span class="kw">paste</span>(<span class="st">&quot;(&quot;</span>, 
-                     <span class="kw">paste</span>(<span class="kw">sapply</span>(children<span class="op">$</span>uri, recurse), 
-                           <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span> ), 
-                     <span class="st">&quot;)&quot;</span>,  
-                     <span class="kw">get_name</span>(id), <span class="co"># label interior nodes</span>
-                     <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>))
-    }
-}</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">recurse &lt;-<span class="st"> </span><span class="cf">function</span>(node){</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">  </a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="co"># fetch the taxonomic rank and id string</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">    rank_query &lt;-<span class="st"> </span><span class="kw">paste0</span>(</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">        <span class="st">&quot;SELECT ?rank ?id WHERE {</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">            ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#toTaxon&gt; &lt;&quot;</span>,node,<span class="st">&quot;&gt; .</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">            ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#rank&gt; ?rank</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="st">          }&quot;</span>)</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">    result &lt;-<span class="st"> </span><span class="kw">rdf_query</span>(graph, rank_query)</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">    </a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">    <span class="co"># get the local ID, strip URI part</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">    id &lt;-<span class="st"> </span>result<span class="op">$</span>id</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">    id &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;^.+#&quot;</span>, <span class="st">&quot;&quot;</span>, id, <span class="dt">perl =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14">    </a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">    <span class="co"># if rank is terminal, return the name</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16">    <span class="cf">if</span> (result<span class="op">$</span>rank <span class="op">==</span><span class="st"> &quot;http://rs.tdwg.org/ontology/voc/TaxonRank#Species&quot;</span>) {</a>
+<a class="sourceLine" id="cb7-17" data-line-number="17">        <span class="kw">return</span>(<span class="kw">get_name</span>(id))</a>
+<a class="sourceLine" id="cb7-18" data-line-number="18">    }</a>
+<a class="sourceLine" id="cb7-19" data-line-number="19">    </a>
+<a class="sourceLine" id="cb7-20" data-line-number="20">    <span class="co"># recurse deeper</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21">    <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb7-22" data-line-number="22">        child_query &lt;-<span class="st"> </span><span class="kw">paste0</span>(</a>
+<a class="sourceLine" id="cb7-23" data-line-number="23">            <span class="st">&quot;SELECT ?uri WHERE {</span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="st">                ?id &lt;http://www.w3.org/2000/01/rdf-schema#subClassOf&gt; &lt;&quot;</span>,node,<span class="st">&quot;&gt; .</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="st">                ?id &lt;http://rs.tdwg.org/ontology/voc/TaxonConcept#toTaxon&gt; ?uri</span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="st">            }&quot;</span>)</a>
+<a class="sourceLine" id="cb7-27" data-line-number="27">        children &lt;-<span class="st"> </span><span class="kw">rdf_query</span>(graph, child_query)</a>
+<a class="sourceLine" id="cb7-28" data-line-number="28">        </a>
+<a class="sourceLine" id="cb7-29" data-line-number="29">        <span class="kw">return</span>(<span class="kw">paste</span>(<span class="st">&quot;(&quot;</span>, </a>
+<a class="sourceLine" id="cb7-30" data-line-number="30">                     <span class="kw">paste</span>(<span class="kw">sapply</span>(children<span class="op">$</span>uri, recurse), </a>
+<a class="sourceLine" id="cb7-31" data-line-number="31">                           <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span> ), </a>
+<a class="sourceLine" id="cb7-32" data-line-number="32">                     <span class="st">&quot;)&quot;</span>,  </a>
+<a class="sourceLine" id="cb7-33" data-line-number="33">                     <span class="kw">get_name</span>(id), <span class="co"># label interior nodes</span></a>
+<a class="sourceLine" id="cb7-34" data-line-number="34">                     <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>))</a>
+<a class="sourceLine" id="cb7-35" data-line-number="35">    }</a>
+<a class="sourceLine" id="cb7-36" data-line-number="36">}</a></code></pre></div>
 <p>With these functions in place, it is straight forward to build the tree from the semantic RDFa data and then visualize it</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newick &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="kw">recurse</span>(root), <span class="st">&quot;;&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)
-tree &lt;-<span class="st"> </span><span class="kw">read.newick</span>(<span class="dt">text =</span> newick)
-collapsed &lt;-<span class="st"> </span><span class="kw">collapse.singles</span>(tree)
-<span class="kw">plot</span>(collapsed, 
-     <span class="dt">type=</span><span class="st">'cladogram'</span>, 
-     <span class="dt">show.tip.label=</span><span class="ot">FALSE</span>, 
-     <span class="dt">show.node.label=</span><span class="ot">TRUE</span>, 
-     <span class="dt">cex=</span><span class="fl">0.75</span>, 
-     <span class="dt">edge.color=</span><span class="st">'grey60'</span>, 
-     <span class="dt">label.offset=</span><span class="op">-</span><span class="dv">9</span>)</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">newick &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="kw">recurse</span>(root), <span class="st">&quot;;&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">tree &lt;-<span class="st"> </span><span class="kw">read.newick</span>(<span class="dt">text =</span> newick)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">collapsed &lt;-<span class="st"> </span><span class="kw">collapse.singles</span>(tree)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw">plot</span>(collapsed, </a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">     <span class="dt">type=</span><span class="st">'cladogram'</span>, </a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">     <span class="dt">show.tip.label=</span><span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">     <span class="dt">show.node.label=</span><span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">     <span class="dt">cex=</span><span class="fl">0.75</span>, </a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">     <span class="dt">edge.color=</span><span class="st">'grey60'</span>, </a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">     <span class="dt">label.offset=</span><span class="op">-</span><span class="dv">9</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 
 
