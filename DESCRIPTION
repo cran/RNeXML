@@ -1,7 +1,7 @@
 Package: RNeXML
 Type: Package
 Title: Semantically Rich I/O for the 'NeXML' Format
-Version: 2.1.2
+Version: 2.2.0
 Authors@R: c(person("Carl", "Boettiger", role = c("cre", "aut"),
     email="cboettig@gmail.com", comment = c(ORCID="0000-0002-1642-628X")), 
     person("Scott", "Chamberlain", role ="aut", comment = c(ORCID="0000-0003-1444-9135")), 
@@ -18,8 +18,8 @@ License: BSD_3_clause + file LICENSE
 VignetteBuilder: knitr
 Suggests: spelling, rdflib, geiger (>= 2.0), phytools (>= 0.3.93),
         knitr (>= 1.5), rfigshare (>= 0.3.0), knitcitations (>= 1.0.1),
-        testthat (>= 0.10.0), phylobase (>= 0.6.8), rmarkdown (>=
-        0.3.3), xslt, taxize (>= 0.2.2), covr
+        testthat (>= 0.10.0), rmarkdown (>= 0.3.3), xslt, taxize (>=
+        0.2.2), covr
 Depends: R (>= 3.0.0), ape (>= 3.1), methods (>= 3.0.0)
 Imports: XML (>= 3.95), plyr (>= 1.8), reshape2 (>= 1.2.2), httr (>=
         0.3), uuid (>= 0.1-1), dplyr (>= 0.5.0), lazyeval (>= 0.1.0),
@@ -34,13 +34,13 @@ Collate: 'classes.R' 'add_basic_meta.R' 'add_characters.R' 'add_meta.R'
         'nexmlTree.R' 'nexml_add.R' 'nexml_get.R' 'nexml_methods.R'
         'nexml_publish.R' 'nexml_read.R' 'nexml_validate.R'
         'nexml_write.R' 'simmap.R' 'taxize_nexml.R' 'tbl_df.R'
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.0
 X-schema.org-applicationCategory: Data Publication
 X-schema.org-keywords: metadata, nexml, phylogenetics, linked-data
 X-schema.org-isPartOf: https://ropensci.org
 Language: en-US
 NeedsCompilation: no
-Packaged: 2018-08-13 04:58:39 UTC; cboettig
+Packaged: 2018-11-01 04:21:39 UTC; cboettig
 Author: Carl Boettiger [cre, aut] (<https://orcid.org/0000-0002-1642-628X>),
   Scott Chamberlain [aut] (<https://orcid.org/0000-0003-1444-9135>),
   Hilmar Lapp [aut] (<https://orcid.org/0000-0001-9107-0714>),
@@ -48,4 +48,4 @@ Author: Carl Boettiger [cre, aut] (<https://orcid.org/0000-0002-1642-628X>),
   Rutger Vos [aut] (<https://orcid.org/0000-0001-9254-7318>)
 Maintainer: Carl Boettiger <cboettig@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-08-13 11:30:03 UTC
+Date/Publication: 2018-11-01 21:50:17 UTC
