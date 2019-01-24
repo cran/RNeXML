@@ -22,6 +22,8 @@
 #' ## Append more metadata, and specify a level: 
 #' history <- meta(property = "skos:historyNote",
 #'                  content = "Mapped from the bird.orders data in the ape package using RNeXML")
+#' data(bird.orders)
+#' nex <- add_trees(bird.orders) # need to have created a trees block first
 #' nex <- add_meta(history, 
 #'                 nexml = nex,
 #'                 level = "trees",
@@ -37,22 +39,24 @@ add_meta <- function(meta,
                      i = 1, 
                      at_id = NULL){
   level <- match.arg(level)
-  if(is(meta, "meta"))
+  if (is.null(meta))
+    stop("meta object to add is null, with no default")
+  if(!is.list(meta))
     meta <- list(meta)
   if(!all(sapply(meta, is, "meta")))
-    stop("All elements in list must be of class 'meta'")
+    stop("All elements in list must be of class 'meta' or a subclass")
  
   if(!is.null(at_id)){
     stop("function does not yet handle at_id assignments")
     # case not written yet
   } else if(level =="nexml"){ 
-    nexml@meta <- new("ListOfmeta", c(unlist(nexml@meta), unlist(meta)))
+    nexml@meta <- c(nexml@meta, meta)
   } else if(level =="otus"){ 
-    nexml@otus[[i]]@meta <- new("ListOfmeta", c(nexml@otus[[i]]@meta, meta))
-  }  else if(level =="nexml"){ 
-    nexml@trees[[i]]@meta <- new("ListOfmeta", c(nexml@trees[[i]]@meta, meta))
-  }  else if(level =="nexml"){ 
-    nexml@characters[[i]]@meta <- new("ListOfmeta", c(nexml@characters[[i]]@meta, meta))
+    nexml@otus[[i]]@meta <- c(nexml@otus[[i]]@meta, meta)
+  } else if(level == "trees"){
+    nexml@trees[[i]]@meta <- c(nexml@trees[[i]]@meta, meta)
+  } else if(level == "characters"){
+    nexml@characters[[i]]@meta <- c(nexml@characters[[i]]@meta, meta)
   } 
 
   ## append additional namespaces

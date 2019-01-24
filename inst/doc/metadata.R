@@ -2,7 +2,8 @@
 library("methods")
 library("knitr")
 opts_chunk$set(tidy = FALSE, warning = FALSE, message = FALSE, 
-               cache = FALSE, comment = NA, verbose = TRUE)
+               cache = FALSE, comment = NA, verbose = TRUE,
+               eval =  require("taxadb"))
 basename <- gsub(".Rmd", "", knitr:::knit_concord$get('infile'))
 
 ## ------------------------------------------------------------------------
@@ -83,7 +84,7 @@ library("geiger")
 data("primates")
 add_trees(primates$phy) %>% 
   add_characters(primates$dat, ., append=TRUE) %>% 
-  taxize_nexml() -> nex 
+  taxize_nexml("itis") -> nex 
 
 ## ------------------------------------------------------------------------
 otu_meta <- get_metadata(nex, "otus/otu")

@@ -44,19 +44,18 @@ setMethod("fromNeXML",
 
 #########################
 
-setClass("Meta",
+setClass("meta",
          slots = c(children = "list"), 
          contains = "Base")
-setMethod("fromNeXML", 
-          signature("Meta", "XMLInternalElementNode"),
-          function(obj, from){
-            obj <- callNextMethod()
-          }
-)
-setMethod("toNeXML", 
-          signature("Meta", "XMLInternalElementNode"), 
-          function(object, parent){
-            parent <- callNextMethod()
+setAs("XMLInternalNode", "meta", function(from){
+  type <- xmlAttrs(from)["type"]
+  if(is.na(type)) ## FIXME This is CRUDE
+    type <- xmlAttrs(from)["xsi:type"]
+  if(is.na(type)) # if still not defined...
+    type = "meta"
+  else
+    type <- sub(".*:", "", type)[1] ## FIXME This is CRUDE
+  fromNeXML(New(type), from)
 })
 
 
@@ -67,7 +66,7 @@ setClass("LiteralMeta",
                         property = "character", 
                         datatype = "character",
                         content = "character"),
-         contains="Meta")
+         contains="meta")
 setMethod("fromNeXML", 
           signature("LiteralMeta", "XMLInternalElementNode"),
           function(obj, from){
@@ -79,25 +78,46 @@ setMethod("fromNeXML",
             obj@property <- attrs[["property"]]
             if(!is.na(attrs["datatype"]))
                  obj@datatype <- attrs[["datatype"]]
-            if(!is.na(attrs["content"]))
+            if(is.na(attrs["content"])) {
+                 kids <- xmlChildren(from)
+                 if (length(kids) == 1 && names(kids) != "text") {
+                   cnt <- saveXML(kids[[1]], indent = FALSE)
+                   # need to capture the XML namespaces for later serialization
+                   nsList <- xmlNamespace(kids[[1]])
+                   attr(cnt, "namespaces") <- nsList
+                   if (length(nsList) > 0)
+                     # now that namespaces are captured, their declarations
+                     # are redundant and can get in the way at the string level
+                     cnt <- gsub(" xmlns:[A-Za-z0-9=]*\"[^\"]+\"", "", cnt)
+                   obj@content <- xml(cnt)
+                 }
+            } else
                  obj@content <- attrs[["content"]]
             if(!is.na(attrs["id"]))
                  obj@id <- attrs[["id"]]
-               obj
+            obj
           }
 )
 setMethod("toNeXML", 
           signature("LiteralMeta", "XMLInternalElementNode"), 
           function(object, parent){
             parent <- callNextMethod()
+            cnt <- object@content
+            if (length(cnt) > 0 && class(cnt) == "XMLString") {
+              # need to add back in the namespace definitions used by the
+              # XML value to avoid a stream of warnings, even if this will
+              # probably be redundant with the doc root
+              parseXMLAndAdd(cnt, parent = parent, nsDefs = attr(cnt, "namespaces"))
+              cnt <- character(0)
+            }
             attrs <- c(id = unname(object@id),
                        property = unname(object@property),  # required
                        datatype = unname(object@datatype),  # optional
-                       content = unname(object@content))   # required
+                       content = unname(cnt))               # required
             attrs <- plyr::compact(attrs)
             addAttributes(parent, .attrs = attrs)
 })
-setAs("XMLInternalElementNode", "LiteralMeta", function(from) fromNeXML(new("LiteralMeta"), from)) 
+setAs("XMLInternalElementNode", "LiteralMeta", function(from) fromNeXML(New("LiteralMeta"), from))
 setAs("LiteralMeta", "XMLInternalElementNode", function(from) toNeXML(from, newXMLNode("meta")))
 setAs("LiteralMeta", "XMLInternalNode", function(from) toNeXML(from, newXMLNode("meta")))
 
@@ -108,18 +128,22 @@ setClass("ResourceMeta",
          slots = c(id = "character",
                         rel = "character", 
                         href = "character"),
-         contains="Meta")
+         contains="meta")
 setMethod("fromNeXML", 
           signature("ResourceMeta", "XMLInternalElementNode"),
           function(obj, from){
             obj <- callNextMethod()
             attrs <- xmlAttrs(from)
-            obj@href <- attrs[["href"]]
+            if(!is.na(attrs["href"]))
+              obj@href <- attrs[["href"]]
             if(!is.na(attrs["id"]))
               obj@id <- attrs[["id"]]
             if(!is.na(attrs[["rel"]]))
                  obj@rel <- attrs[["rel"]]
-               obj
+            kids <- xmlChildren(from)
+            if(length(kids) > 0)
+              obj@children <- lapply(kids[names(kids) == "meta"], as, "meta")
+            obj
           }
 )
 setMethod("toNeXML", 
@@ -131,52 +155,37 @@ setMethod("toNeXML",
                        rel = unname(object@rel))  
             attrs <- plyr::compact(attrs)
             addAttributes(parent, .attrs = attrs)
+            if (length(object@children) > 0)
+              addChildren(parent, kids = lcapply(object@children, as, "XMLInternalNode"))
+            parent
 })
-setAs("XMLInternalElementNode", "ResourceMeta", function(from) fromNeXML(new("ResourceMeta"), from)) 
-setAs("ResourceMeta", "XMLInternalElementNode", function(from) toNeXML(from, newXMLNode("meta")))
+setAs("XMLInternalElementNode", "ResourceMeta", function(from) fromNeXML(New("ResourceMeta"), from))
 setAs("ResourceMeta", "XMLInternalNode", function(from) toNeXML(from, newXMLNode("meta")))
+setAs("ResourceMeta", "XMLInternalElementNode", function(from) toNeXML(from, newXMLNode("meta")))
 
 
 
 ##############################################
 
-setClass("meta", 
-         contains=c("LiteralMeta", "ResourceMeta"))
-setAs("XMLInternalElementNode", "meta", function(from){ 
-      type <- xmlAttrs(from)["type"]
-      if(is.na(type)) ## FIXME This is CRUDE
-        type <- xmlAttrs(from)["xsi:type"]
-      if(is.na(type)) # if still not defined...
-        fromNeXML(new("meta", from))
-      else {
-        type <- gsub(".*:", "", type) ## FIXME This is CRUDE
-        fromNeXML(new(type[1]), from)
-      }
-})
 
-setAs("meta", "XMLInternalElementNode", function(from){
-      if(length( slot(from, "xsi:type") ) > 0 ){
-        if(grepl("LiteralMeta|ResourceMeta", slot(from, "xsi:type")))
-          m <- as(from, slot(from, "xsi:type"))
-        }
-      else
-        m <- from
-      toNeXML(m, newXMLNode("meta", .children = from@children))
-})
-setAs("meta", "XMLInternalNode", function(from) 
-      as(from, "XMLInternalElementNode"))
-# Methods inherited automatically?
-
+setClass("ListOfmeta",
+         slots = c(names="character"),
+         contains = "list",
+         validity = function(object)
+           if(!all(sapply(object, is, "meta")))
+             "not all elements are meta objects"
+           else
+             TRUE
+         )
 
 
 ###############################################
 
-setClass("ListOfmeta", slots = c(names="character"), contains = "list")
-      
-
-###############################################
-
-
+#' Class of objects that have metadata as lists of meta elements
+#'
+#' @slot meta list of `meta` objects
+#' @slot about for RDF extraction, the identifier for the resource that this
+#'   object is about
 setClass("Annotated",
          slots = c(meta = "ListOfmeta",
                         about = "character"),
@@ -187,7 +196,7 @@ setMethod("fromNeXML",
             obj <- callNextMethod()
             kids <- xmlChildren(from)
             if(length(kids) > 0)
-              obj@meta <- new("ListOfmeta", 
+              obj@meta <- New("ListOfmeta",
                               lapply(kids[names(kids) == "meta"], 
                                      as, "meta"))
             if(!is.null(xmlAttrs(from)))
@@ -199,7 +208,7 @@ setMethod("toNeXML",
           signature("Annotated", "XMLInternalElementNode"), 
            function(object, parent){
              parent <- callNextMethod()
-             addChildren(parent, kids = object@meta)
+             addChildren(parent, kids = lcapply(object@meta, as, "XMLInternalNode"))
              if(length(object@about) > 0)
                addAttributes(parent, "about" = object@about)
              parent
@@ -328,7 +337,7 @@ setAs("node", "XMLInternalNode",
 setAs("node", "XMLInternalElementNode",
       function(from) toNeXML(from, newXMLNode("node")))
 setAs("XMLInternalElementNode", "node",
-      function(from) fromNeXML(new("node"), from))
+      function(from) fromNeXML(nexml.node(), from))
 
 
 
@@ -344,7 +353,8 @@ setMethod("fromNeXML",
           function(obj, from){
             obj <- callNextMethod()
             attrs <- xmlAttrs(from)
-            obj@source <- attrs["source"]
+            if (!is.na(attrs["source"]))
+              obj@source <- attrs["source"]
             obj@target <- attrs["target"]
              if(!is.na(attrs["length"]))
                obj@length <- as.numeric(attrs["length"])
@@ -355,7 +365,10 @@ setMethod("toNeXML",
           signature("edge", "XMLInternalElementNode"),
           function(object, parent){
             parent <- callNextMethod()
-            addAttributes(parent, "source" = object@source)
+            if(is(object, "rootEdge"))
+              xmlName(parent) <- "rootedge"
+            else
+              addAttributes(parent, "source" = object@source)
             addAttributes(parent, "target" = object@target)
             if(length(object@length) > 0)
                addAttributes(parent, "length" = object@length)
@@ -366,43 +379,18 @@ setAs("edge", "XMLInternalNode",
 setAs("edge", "XMLInternalElementNode",
       function(from) toNeXML(from, newXMLNode("edge")))
 setAs("XMLInternalElementNode", "edge",
-      function(from) fromNeXML(new("edge"), from))
+      function(from) fromNeXML(nexml.edge(), from))
 
-
-##################################################
-
-setClass("rootEdge", 
-         slots = c(source = "character",
-                        target = "character", 
-                        length = "numeric"), 
-         contains="IDTagged")
-setMethod("fromNeXML", 
-          signature("rootEdge", "XMLInternalElementNode"),
-          function(obj, from){
-            obj <- callNextMethod()
-            attrs <- xmlAttrs(from)
-            obj@target <- attrs["target"]
-             if(!is.na(attrs["length"]))
-               obj@length <- as.numeric(attrs["length"])
-             obj
-          }
-)
-setMethod("toNeXML", 
-          signature("rootEdge", "XMLInternalElementNode"),
-          function(object, parent){
-            parent <- callNextMethod()
-            addAttributes(parent, "target" = object@target)
-            if(length(object@length) > 0)
-               addAttributes(parent, "length" = object@length)
-            parent
-          })
-setAs("rootEdge", "XMLInternalNode",
-      function(from) toNeXML(from, newXMLNode("rootedge"))) 
-setAs("rootEdge", "XMLInternalElementNode",
-      function(from) toNeXML(from, newXMLNode("rootedge"))) 
-setAs("XMLInternalElementNode", "rootEdge",
-      function(from) fromNeXML(new("rootEdge"), from))
-
+# virtual class, allows asking is(edge, "rootEdge") to determine whether
+# a given edge object is a root edge or not
+setClass("rootEdge") # creates a virtual class
+setIs("edge", "rootEdge",
+      test = function(Object) {
+        length(Object@target) > 0 && length(Object@source) == 0
+      },
+      replace = function(Object, value) {
+        stop("rootEdge is virtual, cannot replace")
+      })
 
 ################################ alternatively called "Taxon" by the schema
 
@@ -425,7 +413,7 @@ setAs("otu", "XMLInternalNode",
 setAs("otu", "XMLInternalElementNode",
       function(from) toNeXML(from, newXMLNode("otu")))
 setAs("XMLInternalElementNode", "otu",
-      function(from) fromNeXML(new("otu"), from))
+      function(from) fromNeXML(nexml.otu(), from))
 
 ################################ alternatively called Taxa by the schema
 
@@ -448,7 +436,7 @@ setMethod("fromNeXML",
             obj <- callNextMethod()
             kids <- xmlChildren(from)
             if(length(kids) > 0)
-              obj@otu <- new("ListOfotu", 
+              obj@otu <- New("ListOfotu",
                               lapply(kids[names(kids) == "otu"], 
                                      as, "otu"))
             obj
@@ -457,7 +445,7 @@ setMethod("toNeXML",
           signature("otus", "XMLInternalElementNode"),
           function(object, parent){
             parent <- callNextMethod()
-            addChildren(parent, kids = object@otu)
+            addChildren(parent, kids = lcapply(object@otu, as, "XMLInternalNode"))
             parent
           })
 setAs("otus", "XMLInternalNode",
@@ -465,7 +453,7 @@ setAs("otus", "XMLInternalNode",
 setAs("otus", "XMLInternalElementNode",
       function(from) toNeXML(from, newXMLNode("otus")))
 setAs("XMLInternalElementNode", "otus",
-      function(from) fromNeXML(new("otus"), from))
+      function(from) fromNeXML(nexml.otus(), from))
 
 ################################
 
@@ -474,7 +462,7 @@ setClass("ListOfedge", slots = c(names="character"),
          contains = "list",
          validity = function(object)
                        if(!all(sapply(object, is, "edge")))
-                          "not all elements are meta objects"
+                          "not all elements are edge objects"
                        else
                          TRUE)
 
@@ -484,7 +472,7 @@ setClass("ListOfnode", slots = c(names="character"),
          contains = "list",
          validity = function(object)
                        if(!all(sapply(object, is, "node")))
-                          "not all elements are meta objects"
+                          "not all elements are node objects"
                        else
                          TRUE)
 
@@ -493,35 +481,42 @@ setClass("ListOfnode", slots = c(names="character"),
 setClass("tree", 
          slots = c(node = "ListOfnode", 
                         edge = "ListOfedge",
-                        rootedge = "rootEdge"), # Actually AbstractRootEdge
+                        rootedge = "edge"),
          contains = "IDTagged")
 setMethod("fromNeXML", 
           signature("tree", "XMLInternalElementNode"),
           function(obj, from){
+            .cacheNextMethod()
             obj <- callNextMethod()
             kids <- xmlChildren(from)
-            obj@node <- new("ListOfnode", 
+            obj@node <- New("ListOfnode",
                             lapply(kids[names(kids) == "node"], 
                                    as, "node"))
-            obj@edge <- new("ListOfedge", 
+            obj@edge <- New("ListOfedge",
                             lapply(kids[names(kids) == "edge"], 
                                    as, "edge"))
+            rootEdge <- kids[names(kids) == "rootedge"]
+            if (length(rootEdge) > 0)
+              obj@rootedge <- as(rootEdge[[1]], "edge")
             obj
           })
 setMethod("toNeXML", 
           signature("tree", "XMLInternalElementNode"),
           function(object, parent){
+            .cacheNextMethod()
             parent <- callNextMethod()
-            addChildren(parent, kids = object@node)
-            addChildren(parent, kids = object@edge)
+            addChildren(parent, kids = lcapply(object@node, as, "XMLInternalNode"))
+            addChildren(parent, kids = lcapply(object@edge, as, "XMLInternalNode"))
+            if (is(object@rootedge, "rootEdge"))
+              addChildren(parent, as(object@rootedge, "XMLInternalNode"))
             parent
           })
 setAs("tree", "XMLInternalNode",
-      function(from) toNeXML(from, newXMLNode("tree")))
+      function(from) .callGeneric("toNeXML", from, newXMLNode("tree")))
 setAs("tree", "XMLInternalElementNode",
-      function(from) toNeXML(from, newXMLNode("tree")))
+      function(from) .callGeneric("toNeXML", from, newXMLNode("tree")))
 setAs("XMLInternalElementNode", "tree",
-      function(from) fromNeXML(new("tree"), from))
+      function(from) .callGeneric("fromNeXML", nexml.tree(), from))
 
 
 
@@ -537,7 +532,7 @@ setMethod("fromNeXML",
           function(obj, from){
             obj <- callNextMethod()
             kids <- xmlChildren(from)
-            obj@tree <- new("ListOftree", 
+            obj@tree <- New("ListOftree",
                             lapply(kids[names(kids) == "tree"], 
                                    as, "tree"))
             obj
@@ -546,7 +541,7 @@ setMethod("toNeXML",
           signature("trees", "XMLInternalElementNode"),
           function(object, parent){
             parent <- callNextMethod()
-            addChildren(parent, kids = object@tree)
+            addChildren(parent, kids = lapply(object@tree, as, "XMLInternalNode"))
 #            addChildren(parent, kids = object@network)
             parent
           })
@@ -555,7 +550,7 @@ setAs("trees", "XMLInternalNode",
 setAs("trees", "XMLInternalElementNode",
       function(from) toNeXML(from, newXMLNode("trees")))
 setAs("XMLInternalElementNode", "trees",
-      function(from) fromNeXML(new("trees"), from))
+      function(from) fromNeXML(nexml.trees(), from))
 
 
 ####################################################
@@ -572,18 +567,53 @@ nexml_namespaces <-
   c("nex"   = "http://www.nexml.org/2009",
     "xsi"   = "http://www.w3.org/2001/XMLSchema-instance",
     "xml"   = "http://www.w3.org/XML/1998/namespace",
-    "cdao"  = "http://purl.obolibrary.org/obo/cdao.owl",
+    "cdao"  = "http://purl.obolibrary.org/obo/",
     "xsd"   = "http://www.w3.org/2001/XMLSchema#",
     "dc"    = "http://purl.org/dc/elements/1.1/",
     "dcterms" = "http://purl.org/dc/terms/",
-    "ter" = "http://purl.org/dc/terms/",
     "prism" = "http://prismstandard.org/namespaces/1.2/basic/",
     "cc"    = "http://creativecommons.org/ns#",
     "ncbi"  = "http://www.ncbi.nlm.nih.gov/taxonomy#",
     "tc"    = "http://rs.tdwg.org/ontology/voc/TaxonConcept#")
 
-
-setClass("nexml", 
+#' Class representing a NeXML document
+#'
+#' The `nexml` class represents a NeXML document, and is the top of the
+#' class hierarchy defined in this package, corresponding to the root node
+#' of the corresponding XML document.
+#'
+#' Normally objects of this type are created by the package as a result of
+#' reading a NeXML file, or of converting from another type, such as
+#' `ape::phylo`. Also, interacting directly with the slots of the class is
+#' normally not necessary. Instead, use the `get_XXX()` and `add_XXX()`
+#' functions in the API. 
+#' @slot trees list, corresponding to the list of `<trees/>` elements in
+#'   NeXML. Elements will be of class `trees`.
+#' @slot characters list, corresponding to the list of `<characters/>`
+#'   elements in NeXML. Elements will be of class `characters`.
+#' @slot otus list, corresponding to the list of `<otus/>` elements in NeXML.
+#'   Elements will be of class `otus`.
+#' @slot about inherited, see [Annotated][Annotated-class]
+#' @slot meta inherited, see [Annotated][Annotated-class]
+#' @slot xsi:type for internal use
+#' @slot version NeXML schema version, do not change
+#' @slot generator name of software generating the XML
+#' @slot xsi:schemaLocation for internal use, do not change
+#' @slot namespaces named character vector giving the XML namespaces
+#' @seealso [read.nexml()]
+#' @examples
+#' nex <- nexml() # a nexml object with no further content
+#' nex <- new("nexml") # accomplishes the same thing
+#' nex@generator
+#' length(nex@trees)
+#'
+#' data(bird.orders)
+#' nex <- as(bird.orders, "nexml")
+#' summary(nex)
+#' length(nex@trees)
+#' @export nexml
+#' @exportClass nexml
+nexml <- setClass("nexml",
          slots = c(version = "character",
                         generator = "character",
                         "xsi:schemaLocation" = "character", # part of base?
@@ -627,18 +657,25 @@ setMethod("fromNeXML",
             ns <- sapply(ns_defs, `[[`, "uri")
             obj <- add_namespaces(ns, obj)
 
+            # add our own namespaces, which will skip already present prefixes;
+            # also add a base namespace if there isn't one already
+            ourNS <- nexml_namespaces;
+            if (! any(names(obj@namespaces) == ""))
+              ourNS <- c(ourNS, unname(nexml_namespaces["nex"]))
+            obj <- add_namespaces(ourNS, nexml = obj)
+
             # Handle children
             kids <- xmlChildren(from)
             # at least 1 OTU block is required 
-            obj@otus <- new("ListOfotus", 
+            obj@otus <- New("ListOfotus",
                             lapply(kids[names(kids) == "otus"], 
                                    as, "otus"))
             if("characters" %in% names(kids))
-              obj@characters <- new("ListOfcharacters", 
+              obj@characters <- New("ListOfcharacters",
                             lapply(kids[names(kids) == "characters"], 
                                    as, "characters"))
             if("trees" %in% names(kids))
-              obj@trees <- new("ListOftrees", 
+              obj@trees <- New("ListOftrees",
                             lapply(kids[names(kids) == "trees"], 
                                    as, "trees"))
             obj
@@ -665,7 +702,7 @@ setAs("nexml", "XMLInternalNode",
 setAs("nexml", "XMLInternalElementNode",
       function(from) suppressWarnings(toNeXML(from, newXMLNode("nex:nexml", namespaceDefinitions = from@namespaces))))
 setAs("XMLInternalElementNode", "nexml",
-      function(from) fromNeXML(new("nexml"), from))
+      function(from) fromNeXML(nexml(namespaces = character(0)), from))
 
 
 

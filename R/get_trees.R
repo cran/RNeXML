@@ -1,3 +1,6 @@
+#' @include nexmlTree.R
+NULL
+
 #' extract all phylogenetic trees in ape format
 #' 
 #' extract all phylogenetic trees in ape format
@@ -10,7 +13,6 @@
 #'    the number of trees present in the nexml file, and also preserves any 
 #'    grouping of trees.  
 #' @export
-#' @import plyr 
 #' @examples
 #' comp_analysis <- system.file("examples", "comp_analysis.xml", package="RNeXML")
 #' nex <- nexml_read(comp_analysis)
@@ -124,6 +126,7 @@ setAs("nexml", "phylo", function(from){
 #' e.g. (from get_otu_maps for the otus set matching the relevant trees node. 
 #' @return phylo object.  If a "reconstructions" annotation is found on the 
 #' edges, return simmap maps slot as well.  
+#' @importFrom plyr arrange
 toPhylo <- function(tree, otus){
   otu <- NULL # Avoid CRAN NOTE as per http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check
   ## Extract the nodes list
@@ -131,7 +134,14 @@ toPhylo <- function(tree, otus){
                   function(x) 
                     c(node = unname(x@id), 
                       otu = missing_as_na(x@otu)))
-  
+  # conversion (nor ape?) can't handle rootedge, to if there is one, add source
+  if (is(tree@rootedge, "rootEdge")) {
+    rootEdge <- tree@rootedge
+    rootEdge@source <- nexml_id(prefix = "rn")
+    newroot <- c(node = rootEdge@source, otu = NA)
+    nodes <- cbind(unname(newroot), nodes)
+  } else
+    rootEdge <- NULL
   # If any edges have lengths, use this routine
   if(any(sapply(tree@edge, function(x) length(x@length) > 0)))
     edges <- sapply(unname(tree@edge), 
@@ -149,6 +159,14 @@ toPhylo <- function(tree, otus){
                       c(source = unname(x@source), 
                         target = unname(x@target), 
                         id = unname(x@id)))
+  # conversion (nor ape?) can't handle rootedge, to if there is one, add it
+  if (! is.null(rootEdge)) {
+    edges <- cbind(c(source = unname(rootEdge@source),
+                     target = unname(rootEdge@target),
+                     length = unname(rootEdge@length),
+                     id = unname(rootEdge@id)),
+                   edges)
+  }
 
   nodes <- data.frame(t(nodes), stringsAsFactors=FALSE)
   names(nodes) <- c("node", "otu")
@@ -179,9 +197,8 @@ toPhylo <- function(tree, otus){
   tip_otus <- as.character(na.omit(nodes$otu))   
   tip.label <- otus[tip_otus]
 
-  # Count internal nodes (assumes bifurcating tree. Does ape always assume this?) 
-  # FIXME use a method that does not assume bifurcating tree... 
-  Nnode <- length(tip.label) - 1 
+  # Count internal nodes
+  Nnode <- max(edge) - length(tip.label)
 
   # assemble the phylo object, assign class and return.  
   phy = list(edge=edge, 

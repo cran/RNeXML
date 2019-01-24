@@ -61,15 +61,31 @@ recursion <- function(i, level){
 
 ## Assumes slot(node, element) is a list
 #' @importFrom lazyeval interp
-#' @importFrom dplyr bind_rows mutate_ %>%
-nodelist_to_df <- function(node, element, fn){
-  dots <- setNames(list(lazyeval::interp(~x, x = node_id(node))), class(node))
-  nodelist <- slot(node, element) 
+#' @importFrom dplyr bind_rows coalesce mutate mutate_ %>%
+#' @importFrom uuid UUIDgenerate
+nodelist_to_df <- function(node, element, fn, nodeId=NA){
+  dots <- setNames(
+    list(lazyeval::interp(~x, x = if (is.na(nodeId)) node_id(node) else nodeId)),
+    idRefColName(node))
+  nodelist <- slot(node, element)
   if(is.list(nodelist)){ ## node has a list of elements
-    nodelist %>% 
-      lapply(fn) %>% 
-      dplyr::bind_rows() %>%
-      dplyr::mutate_(.dots = dots) -> out
+    out <- suppressWarnings(lapply(nodelist, fn)) %>% dplyr::bind_rows()
+    if (length(nodelist) > 0 && all(sapply(nodelist, is, "meta"))) {
+      # meta elements may have nested meta elements, retrieve these here too
+      ids <- sapply(nodelist,
+                    function(n) if (length(n@children) > 0) uuid::UUIDgenerate() else NA)
+      if (length(ids) > 0 && any(!is.na(ids))) {
+        mout <- dplyr::mutate(out, "Meta" = coalesce_(out$LiteralMeta,
+                                                      out$ResourceMeta,
+                                                      ids))
+        nested <- mapply(function(n, id) nodelist_to_df(n, "children", fn, id),
+                         n = nodelist,
+                         id = mout[,"Meta"])
+        if (is.null(names(nested))) nested <- as.data.frame(nested[,1])
+        out <- dplyr::bind_rows(mout, nested)
+      }
+    }
+    dplyr::mutate_(out, .dots = dots) -> out
   } else { ## handle case when node has only one element
     fn(nodelist) %>%
       dplyr::mutate_(.dots = dots)
@@ -83,15 +99,24 @@ node_id <- function(node){
     "root"
 }
 
+idRefColName <- function(node){
+  clname <- class(node)
+  super <- names(getClass(clname)@contains)
+  # meta elements can be nested, avoid clobbering the ID column with the IDREF
+  if (length(super) > 0 && (super[1] == "meta"))
+    super[1]
+  else
+    clname
+}
 
 attributes_to_row <- function(node){
   who <- slotNames(node)
   
   ## Avoid things that are not attributes:
-  types <- sapply(who, function(x) class(slot(node,x)))
+  types <- getSlots(class(node)) # actual slot values may be derived types
   who <- who[ types %in% c("character", "integer", "numeric", "logical") ]
-  if("names" %in% who) 
-    who <- who[!(who %in% "names")]
+  # the "about" attribute is only needed for RDF extraction
+  who <- who[!(who %in% c("names","about"))]
   
   ## Extract attributes, use NAs for numeric(0) / character(0) values
   tmp <- sapply(who, function(x) slot(node, x))
@@ -104,15 +129,3 @@ attributes_to_row <- function(node){
   
   out
 }
-
-
-## Depricated method, still in use in some other functions
-
-setxpath <- function(object){
-  tmp <- tempfile()
-  suppressWarnings(saveXML(object, tmp))
-  doc <- xmlParse(tmp)
-  unlink(tmp)
-  doc
-}
-

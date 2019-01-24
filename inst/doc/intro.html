@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Carl Boettiger" />
+<meta name="author" content="Scott Chamberlain" />
+<meta name="author" content="Rutger Vos" />
+<meta name="author" content="Hilmar Lapp" />
+
+
+<title>A Brief Introduction to RNeXML</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">A Brief Introduction to RNeXML</h1>
+<h4 class="author"><em>Carl Boettiger</em></h4>
+<h4 class="author"><em>Scott Chamberlain</em></h4>
+<h4 class="author"><em>Rutger Vos</em></h4>
+<h4 class="author"><em>Hilmar Lapp</em></h4>
+
+
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{A Brief Introduction to RNeXMLL}
+-->
+<p>Read in a <code>nexml</code> file into the <code>ape::phylo</code> format:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;examples&quot;</span>, <span class="st">&quot;comp_analysis.xml&quot;</span>, <span class="dt">package=</span><span class="st">&quot;RNeXML&quot;</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">nexml &lt;-<span class="st"> </span><span class="kw">nexml_read</span>(f)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">tr &lt;-<span class="st"> </span><span class="kw">get_trees</span>(nexml) <span class="co"># or: as(nexml, &quot;phylo&quot;)</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">plot</span>(tr)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Write an <code>ape::phylo</code> tree into the <code>nexml</code> format:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">data</span>(bird.orders)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">nexml_write</span>(bird.orders, <span class="st">&quot;test.xml&quot;</span>, <span class="dt">creator =</span> <span class="st">&quot;Carl Boettiger&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;test.xml&quot;</code></pre>
+<p>A key feature of NeXML is the ability to formally validate the construction of the data file against the standard (the lack of such a feature in nexus files had lead to inconsistencies across different software platforms, and some files that cannot be read at all). While it is difficult to make an invalid NeXML file from <code>RNeXML</code>, it never hurts to validate just to be sure:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">nexml_validate</span>(<span class="st">&quot;test.xml&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Extract metadata from the NeXML file:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">birds &lt;-<span class="st"> </span><span class="kw">nexml_read</span>(<span class="st">&quot;test.xml&quot;</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">get_taxa</span>(birds)</a></code></pre></div>
+<pre><code>##     otu            label xsi.type otus
+## 1   ou1 Struthioniformes       NA  os1
+## 2   ou2     Tinamiformes       NA  os1
+## 3   ou3      Craciformes       NA  os1
+## 4   ou4      Galliformes       NA  os1
+## 5   ou5     Anseriformes       NA  os1
+## 6   ou6    Turniciformes       NA  os1
+## 7   ou7       Piciformes       NA  os1
+## 8   ou8    Galbuliformes       NA  os1
+## 9   ou9   Bucerotiformes       NA  os1
+## 10 ou10      Upupiformes       NA  os1
+## 11 ou11    Trogoniformes       NA  os1
+## 12 ou12    Coraciiformes       NA  os1
+## 13 ou13      Coliiformes       NA  os1
+## 14 ou14     Cuculiformes       NA  os1
+## 15 ou15   Psittaciformes       NA  os1
+## 16 ou16      Apodiformes       NA  os1
+## 17 ou17   Trochiliformes       NA  os1
+## 18 ou18  Musophagiformes       NA  os1
+## 19 ou19     Strigiformes       NA  os1
+## 20 ou20    Columbiformes       NA  os1
+## 21 ou21       Gruiformes       NA  os1
+## 22 ou22    Ciconiiformes       NA  os1
+## 23 ou23    Passeriformes       NA  os1</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">get_metadata</span>(birds) </a></code></pre></div>
+<pre><code>##           property   datatype                 content     xsi.type
+## 1       dc:creator xsd:string          Carl Boettiger  LiteralMeta
+## 2 dcterms:modified xsd:string 2019-01-23 00:14:11 GMT  LiteralMeta
+## 3       cc:license       &lt;NA&gt;                    &lt;NA&gt; ResourceMeta
+##                                                href Meta
+## 1                                              &lt;NA&gt;   m2
+## 2                                              &lt;NA&gt;   m3
+## 3 http://creativecommons.org/publicdomain/zero/1.0/   m4</code></pre>
+<hr />
+<p>Add basic additional metadata:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">  <span class="kw">nexml_write</span>(bird.orders, <span class="dt">file=</span><span class="st">&quot;meta_example.xml&quot;</span>,</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">              <span class="dt">title =</span> <span class="st">&quot;My test title&quot;</span>,</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">              <span class="dt">description =</span> <span class="st">&quot;A description of my test&quot;</span>,</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">              <span class="dt">creator =</span> <span class="st">&quot;Carl Boettiger &lt;cboettig@gmail.com&gt;&quot;</span>,</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">              <span class="dt">publisher =</span> <span class="st">&quot;unpublished data&quot;</span>,</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">              <span class="dt">pubdate =</span> <span class="st">&quot;2012-04-01&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;meta_example.xml&quot;</code></pre>
+<p>By default, <code>RNeXML</code> adds certain metadata, including the NCBI taxon id numbers for all named taxa. This acts a check on the spelling and definitions of the taxa as well as providing a link to additional metadata about each taxonomic unit described in the dataset.</p>
+<div id="advanced-annotation" class="section level3">
+<h3>Advanced annotation</h3>
+<p>We can also add arbitrary metadata to a NeXML tree by define <code>meta</code> objects:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">modified &lt;-<span class="st"> </span><span class="kw">meta</span>(<span class="dt">property =</span> <span class="st">&quot;prism:modificationDate&quot;</span>,</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">                 <span class="dt">content =</span> <span class="st">&quot;2013-10-04&quot;</span>)</a></code></pre></div>
+<p>Advanced use requires specifying the namespace used. Metadata follows the RDFa conventions. Here we indicate the modification date using the prism vocabulary. This namespace is included by default, as it is used for some of the basic metadata shown in the previous example. We can see from this list:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">RNeXML<span class="op">:::</span>nexml_namespaces</a></code></pre></div>
+<pre><code>##                                              nex 
+##                      &quot;http://www.nexml.org/2009&quot; 
+##                                              xsi 
+##      &quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+##                                              xml 
+##           &quot;http://www.w3.org/XML/1998/namespace&quot; 
+##                                             cdao 
+##                &quot;http://purl.obolibrary.org/obo/&quot; 
+##                                              xsd 
+##              &quot;http://www.w3.org/2001/XMLSchema#&quot; 
+##                                               dc 
+##               &quot;http://purl.org/dc/elements/1.1/&quot; 
+##                                          dcterms 
+##                      &quot;http://purl.org/dc/terms/&quot; 
+##                                            prism 
+## &quot;http://prismstandard.org/namespaces/1.2/basic/&quot; 
+##                                               cc 
+##                 &quot;http://creativecommons.org/ns#&quot; 
+##                                             ncbi 
+##          &quot;http://www.ncbi.nlm.nih.gov/taxonomy#&quot; 
+##                                               tc 
+##  &quot;http://rs.tdwg.org/ontology/voc/TaxonConcept#&quot;</code></pre>
+<p>This next block defines a resource (link), described by the <code>rel</code> attribute as a homepage, a term in the <code>foaf</code> vocabulary. Because <code>foaf</code> is not a default namespace, we will have to provide its URL in the full definition below.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">website &lt;-<span class="st"> </span><span class="kw">meta</span>(<span class="dt">href =</span> <span class="st">&quot;http://carlboettiger.info&quot;</span>, </a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">                <span class="dt">rel =</span> <span class="st">&quot;foaf:homepage&quot;</span>)</a></code></pre></div>
+<p>Here we create a history node using the <code>skos</code> namespace. We can also add id values to any metadata element to make the element easier to reference externally:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">  history &lt;-<span class="st"> </span><span class="kw">meta</span>(<span class="dt">property =</span> <span class="st">&quot;skos:historyNote&quot;</span>, </a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">                  <span class="dt">content =</span> <span class="st">&quot;Mapped from the bird.orders data in the ape package using RNeXML&quot;</span>,</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">                  <span class="dt">id =</span> <span class="st">&quot;meta123&quot;</span>)</a></code></pre></div>
+<p>For this kind of richer annotation, it is best to build up our NeXML object sequentially. First we will add <code>bird.orders</code> phylogeny to a new phylogenetic object, and then we will add the metadata elements created above to this object. Finally, we will write the object out as an XML file:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">  birds &lt;-<span class="st"> </span><span class="kw">add_trees</span>(bird.orders)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">  birds &lt;-<span class="st"> </span><span class="kw">add_meta</span>(<span class="dt">meta =</span> <span class="kw">list</span>(history, modified, website),</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">                    <span class="dt">namespaces =</span> <span class="kw">c</span>(<span class="dt">skos =</span> <span class="st">&quot;http://www.w3.org/2004/02/skos/core#&quot;</span>,</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">                                   <span class="dt">foaf =</span> <span class="st">&quot;http://xmlns.com/foaf/0.1/&quot;</span>),</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">                    <span class="dt">nexml=</span>birds)</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">  <span class="kw">nexml_write</span>(birds, </a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">              <span class="dt">file =</span> <span class="st">&quot;example.xml&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;example.xml&quot;</code></pre>
+</div>
+<div id="taxonomic-identifiers" class="section level3">
+<h3>Taxonomic identifiers</h3>
+<p>Add taxonomic identifier metadata to the OTU elements: <!-- This block relies on a robust internet connection that can occassionally fail.  Also it's a bit slow, so don't run it. After all, this command is tested in the unit tests.--></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">nex &lt;-<span class="st"> </span><span class="kw">add_trees</span>(bird.orders)</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">nex &lt;-<span class="st"> </span><span class="kw">taxize_nexml</span>(nex)</a></code></pre></div>
+</div>
+<div id="working-with-character-data" class="section level2">
+<h2>Working with character data</h2>
+<p>NeXML also provides a standard exchange format for handling character data. The R platform is particularly popular in the context of phylogenetic comparative methods, which consider both a given phylogeny and a set of traits. NeXML provides an ideal tool for handling this metadata.</p>
+<div id="extracting-character-data" class="section level3">
+<h3>Extracting character data</h3>
+<p>We can load the library, parse the NeXML file and extract both the characters and the phylogeny.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">library</span>(RNeXML)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">nexml &lt;-<span class="st"> </span><span class="kw">read.nexml</span>(<span class="kw">system.file</span>(<span class="st">&quot;examples&quot;</span>, <span class="st">&quot;comp_analysis.xml&quot;</span>, <span class="dt">package=</span><span class="st">&quot;RNeXML&quot;</span>))</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">traits &lt;-<span class="st"> </span><span class="kw">get_characters</span>(nexml)</a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">tree &lt;-<span class="st"> </span><span class="kw">get_trees</span>(nexml)</a></code></pre></div>
+<p>(Note that <code>get_characters</code> would return both discrete and continuous characters together in the same data.frame, but we use <code>get_characters_list</code> to get separate data.frames for the continuous <code>characters</code> block and the discrete <code>characters</code> block).</p>
+<p>We can then fire up <code>geiger</code> and fit, say, a Brownian motion model the continuous data and a Markov transition matrix to the discrete states:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(geiger)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">fitContinuous</span>(tree, traits[<span class="dv">1</span>], <span class="dt">ncores=</span><span class="dv">1</span>)</a></code></pre></div>
+<pre><code>## GEIGER-fitted comparative model of continuous data
+##  fitted 'BM' model parameters:
+##  sigsq = 1.166011
+##  z0 = 0.255591
+## 
+##  model summary:
+##  log-likelihood = -20.501183
+##  AIC = 45.002367
+##  AICc = 46.716652
+##  free parameters = 2
+## 
+## Convergence diagnostics:
+##  optimization iterations = 100
+##  failed iterations = 0
+##  frequency of best fit = 1.00
+## 
+##  object summary:
+##  'lik' -- likelihood function
+##  'bnd' -- bounds for likelihood search
+##  'res' -- optimization iteration summary
+##  'opt' -- maximum likelihood parameter estimates</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">fitDiscrete</span>(tree, traits[<span class="dv">2</span>], <span class="dt">ncores=</span><span class="dv">1</span>)</a></code></pre></div>
+<pre><code>## GEIGER-fitted comparative model of discrete data
+##  fitted Q matrix:
+##                 0           1
+##     0 -0.07308302  0.07308302
+##     1  0.07308302 -0.07308302
+## 
+##  model summary:
+##  log-likelihood = -4.574133
+##  AIC = 11.148266
+##  AICc = 11.648266
+##  free parameters = 1
+## 
+## Convergence diagnostics:
+##  optimization iterations = 100
+##  failed iterations = 0
+##  frequency of best fit = 1.00
+## 
+##  object summary:
+##  'lik' -- likelihood function
+##  'bnd' -- bounds for likelihood search
+##  'res' -- optimization iteration summary
+##  'opt' -- maximum likelihood parameter estimates</code></pre>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

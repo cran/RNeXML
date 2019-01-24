@@ -15,6 +15,7 @@ bibliography: references.bib
 -->
 
 
+
 ```{r compile-settings, include=FALSE}
 library("methods")
 library("knitr")
@@ -129,7 +130,8 @@ a `simmap` reconstruction into R:
 
 
 ```{r}
-data(simmap_ex)
+f <- system.file("examples", "simmap_ex.xml", package = "RNeXML")
+simmap_ex <- read.nexml(f)
 ```
 
 The `get_trees()` function can be used to return an `ape::phylo` tree as

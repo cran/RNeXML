@@ -50,7 +50,7 @@
 #'              file = "example.xml")
 #' 
 #' }
-nexml_write <- function(x = new("nexml"),
+nexml_write <- function(x = nexml(),
                         file = NULL,
                         trees = NULL,
                         characters = NULL,
@@ -64,7 +64,10 @@ nexml_write <- function(x = new("nexml"),
     nexml <- add_characters(characters, nexml = nexml)
   if(!is.null(meta))
     nexml <- add_meta(meta, nexml = nexml)
-  nexml <- do.call(add_basic_meta, c(list(...), list(nexml=nexml)))
+  argList <- list(..., nexml = nexml)
+  # set last modification time upon writing, if not set already
+  if (is.null(argList$pubdate)) argList$pubdate <- Sys.time()
+  nexml <- do.call(add_basic_meta, argList)
   
   out <- as(nexml, "XMLInternalNode")
   saveXML(out, file = file)
@@ -89,16 +92,15 @@ setAs("tree", "nexml", function(from){
   otus@id = "tax1" #UUIDgenerate()
   trees@id = "Trees" #UUIDgenerate()
   trees@otus = otus@id
-  new("nexml", 
-      trees = new("ListOftrees", list(trees)),
+  nexml(
+      trees = New("ListOftrees", list(trees)),
       otus = otus)
 })
 
 
-setAs("ListOfnode", "otus", function(from)
-  new("otus", otu = from))
+setAs("ListOfnode", "otus", function(from) nexml.otus(otu = from))
 
 setAs("tree", "trees", function(from)
-  new("trees", tree = new("ListOftree", list(from))))
+  nexml.trees(tree = New("ListOftree", list(from))))
 
 

@@ -28,7 +28,8 @@ library("RNeXML")
 nex <- add_namespaces(c(simmap = "https://github.com/ropensci/RNeXML/tree/master/inst/simmap.md"))
 
 ## ------------------------------------------------------------------------
-data(simmap_ex)
+f <- system.file("examples", "simmap_ex.xml", package = "RNeXML")
+simmap_ex <- read.nexml(f)
 
 ## ------------------------------------------------------------------------
 phy <- nexml_to_simmap(simmap_ex)
