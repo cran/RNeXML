@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -98,7 +99,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -293,6 +294,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -301,10 +305,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">The nexml S4 Object</h1>
-<h4 class="author"><em>Carl Boettiger</em></h4>
-<h4 class="author"><em>Scott Chamberlain</em></h4>
-<h4 class="author"><em>Rutger Vos</em></h4>
-<h4 class="author"><em>Hilmar Lapp</em></h4>
+<h4 class="author">Carl Boettiger</h4>
+<h4 class="author">Scott Chamberlain</h4>
+<h4 class="author">Rutger Vos</h4>
+<h4 class="author">Hilmar Lapp</h4>
 
 
 
@@ -386,6 +390,9 @@ attr(,&quot;package&quot;)
 <p>Here we use the <code>c</code> operator to append this element to any existing meta annotations to this otu.</p>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
