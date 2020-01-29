@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Carl Boettiger" />
 <meta name="author" content="Scott Chamberlain" />
@@ -120,9 +119,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -291,7 +287,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -324,38 +321,24 @@ S4 objects have constructor functions to initialize them. We create a new <code>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">nex &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;nexml&quot;</span>)</a></code></pre></div>
 <p>We can see a list of slots contained in this object with</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">slotNames</span>(nex)</a></code></pre></div>
-<pre><code> [1] &quot;version&quot;            &quot;generator&quot;          &quot;xsi:schemaLocation&quot;
- [4] &quot;namespaces&quot;         &quot;otus&quot;               &quot;trees&quot;             
- [7] &quot;characters&quot;         &quot;meta&quot;               &quot;about&quot;             
-[10] &quot;xsi:type&quot;          </code></pre>
+<pre><code> [1] &quot;version&quot;            &quot;generator&quot;          &quot;xsi:schemaLocation&quot; &quot;namespaces&quot;         &quot;otus&quot;              
+ [6] &quot;trees&quot;              &quot;characters&quot;         &quot;meta&quot;               &quot;about&quot;              &quot;xsi:type&quot;          </code></pre>
 <p>Some of these slots have already been populated for us, for instance, the schema version and default namespaces:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">nex<span class="op">@</span>version</a></code></pre></div>
 <pre><code>[1] &quot;0.9&quot;</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">nex<span class="op">@</span>namespaces</a></code></pre></div>
-<pre><code>                                             nex 
-                     &quot;http://www.nexml.org/2009&quot; 
-                                             xsi 
-     &quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
-                                             xml 
-          &quot;http://www.w3.org/XML/1998/namespace&quot; 
-                                            cdao 
-               &quot;http://purl.obolibrary.org/obo/&quot; 
-                                             xsd 
-             &quot;http://www.w3.org/2001/XMLSchema#&quot; 
-                                              dc 
-              &quot;http://purl.org/dc/elements/1.1/&quot; 
-                                         dcterms 
-                     &quot;http://purl.org/dc/terms/&quot; 
-                                           prism 
-&quot;http://prismstandard.org/namespaces/1.2/basic/&quot; 
-                                              cc 
-                &quot;http://creativecommons.org/ns#&quot; 
-                                            ncbi 
-         &quot;http://www.ncbi.nlm.nih.gov/taxonomy#&quot; 
-                                              tc 
- &quot;http://rs.tdwg.org/ontology/voc/TaxonConcept#&quot; 
-                                                 
-                     &quot;http://www.nexml.org/2009&quot; </code></pre>
+<pre><code>                                             nex                                              xsi 
+                     &quot;http://www.nexml.org/2009&quot;      &quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+                                             xml                                             cdao 
+          &quot;http://www.w3.org/XML/1998/namespace&quot;                &quot;http://purl.obolibrary.org/obo/&quot; 
+                                             xsd                                               dc 
+             &quot;http://www.w3.org/2001/XMLSchema#&quot;               &quot;http://purl.org/dc/elements/1.1/&quot; 
+                                         dcterms                                            prism 
+                     &quot;http://purl.org/dc/terms/&quot; &quot;http://prismstandard.org/namespaces/1.2/basic/&quot; 
+                                              cc                                             ncbi 
+                &quot;http://creativecommons.org/ns#&quot;          &quot;http://www.ncbi.nlm.nih.gov/taxonomy#&quot; 
+                                              tc                                                  
+ &quot;http://rs.tdwg.org/ontology/voc/TaxonConcept#&quot;                      &quot;http://www.nexml.org/2009&quot; </code></pre>
 <p>Recognize that <code>nex@namespaces</code> serves the same role as <code>get_namespaces</code> function, but provides direct access to the slot data. For instance, with this syntax we could also overwrite the existing namespaces with <code>nex@namespaces &lt;- NULL</code>. Changing the namespace in this way is not advised.</p>
 <p>Some slots can contain multiple elements of the same type, such as <code>trees</code>, <code>characters</code>, and <code>otus</code>. For instance, we see that</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">class</span>(nex<span class="op">@</span>characters)</a></code></pre></div>

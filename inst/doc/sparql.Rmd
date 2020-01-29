@@ -14,17 +14,9 @@ output: html_vignette
 -->
 
 
-```{r supplement-compile-settings, include=FALSE}
-library("methods")
-library("knitr")
-opts_chunk$set(tidy = FALSE, warning = FALSE, message = FALSE, 
-               cache = FALSE, comment = NA, verbose = TRUE, eval = require(rdflib))
 
-```
 
-```{r include=FALSE}
-library("RNeXML")
-```
+
 
 
 
@@ -49,7 +41,8 @@ is provided for the R environment through the `rrdf` package [@Willighagen_2014]
 so we start by loading that package.  We will also make use of functions
 from `phytools` and `RNeXML`.  
 
-```{r}
+
+```r
 library("rdflib")
 library("xml2")
 library("phytools")
@@ -59,7 +52,8 @@ library("RNeXML")
 We read in an example file that contains semantic metadata annotations
 describing the taxonomic units (OTUs) used in the tree.  
 
-```{r}
+
+```r
 nexml <- nexml_read(system.file("examples/primates.xml", package="RNeXML"))
 ```
 
@@ -97,7 +91,8 @@ can occur in having to copy and paste from PDF files.
 
 We begin by extracting the RDF graph from the NeXML,
 
-```{r}
+
+```r
 rdf <- get_rdf(system.file("examples/primates.xml", package="RNeXML"))
 tmp <- tempfile()  # so we must write the XML out first
 xml2::write_xml(rdf, tmp) 
@@ -109,7 +104,8 @@ We then fetch the NCBI URI for the taxon that has rank 'Order', i.e. the
 root of the primates phylogeny. The dot operator `.` between clauses
 implies a join, in this case
 
-```{r}
+
+```r
 root <- rdf_query(graph, 
 "SELECT ?uri WHERE { 
     ?id <http://rs.tdwg.org/ontology/voc/TaxonConcept#rank> <http://rs.tdwg.org/ontology/voc/TaxonRank#Order> . 
@@ -122,7 +118,8 @@ This makes use of the SPARQL query language provided by the `rrdf`
 package.  We will also define some helper functions that use SPARQL
 queries.  Here we define a function to get the name
 
-```{r}
+
+```r
 get_name <- function(id) {
   max <- length(nexml@otus[[1]]@otu)
   for(i in 1:max) {
@@ -138,7 +135,8 @@ get_name <- function(id) {
 
 Next, we define a recursive function to build a newick tree from the taxonomic rank information.  
 
-```{r}
+
+```r
 recurse <- function(node){
   
     # fetch the taxonomic rank and id string
@@ -175,7 +173,6 @@ recurse <- function(node){
                      sep = "", collapse = ""))
     }
 }
-
 ```
 
 
@@ -183,7 +180,8 @@ With these functions in place, it is straight forward to build the tree
 from the semantic RDFa data and then visualize it
 
 
-```{r}
+
+```r
 newick <- paste(recurse(root), ";", sep = "", collapse = "")
 tree <- read.newick(text = newick)
 collapsed <- collapse.singles(tree)
@@ -195,3 +193,5 @@ plot(collapsed,
      edge.color='grey60', 
      label.offset=-9)
 ```
+
+![plot of chunk unnamed-chunk-8](sparql-unnamed-chunk-8-1.png)

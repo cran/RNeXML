@@ -1,7 +1,7 @@
 Package: RNeXML
 Type: Package
 Title: Semantically Rich I/O for the 'NeXML' Format
-Version: 2.4.0
+Version: 2.4.2
 Authors@R: c(person("Carl", "Boettiger", role = c("cre", "aut"),
     email="cboettig@gmail.com", comment = c(ORCID="0000-0002-1642-628X")), 
     person("Scott", "Chamberlain", role ="aut", comment = c(ORCID="0000-0003-1444-9135")), 
@@ -38,14 +38,14 @@ Collate: 'S4-utils.R' 'classes.R' 'add_basic_meta.R' 'add_characters.R'
         'nexml_read.R' 'nexml_validate.R' 'nexml_write.R'
         'prefixed-uris.R' 'simmap.R' 'taxize_nexml.R' 'tbl_df.R'
         'utils.R'
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 X-schema.org-applicationCategory: Data Publication
 X-schema.org-keywords: metadata, nexml, phylogenetics, linked-data
 X-schema.org-isPartOf: https://ropensci.org
 Language: en-US
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2019-11-08 16:16:27 UTC; cboettig
+Packaged: 2020-01-28 23:30:20 UTC; cboettig
 Author: Carl Boettiger [cre, aut] (<https://orcid.org/0000-0002-1642-628X>),
   Scott Chamberlain [aut] (<https://orcid.org/0000-0003-1444-9135>),
   Hilmar Lapp [aut] (<https://orcid.org/0000-0001-9107-0714>),
@@ -53,4 +53,4 @@ Author: Carl Boettiger [cre, aut] (<https://orcid.org/0000-0002-1642-628X>),
   Rutger Vos [aut] (<https://orcid.org/0000-0001-9254-7318>)
 Maintainer: Carl Boettiger <cboettig@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-11-08 18:20:07 UTC
+Date/Publication: 2020-01-29 09:20:05 UTC
