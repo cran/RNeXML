@@ -1,7 +1,7 @@
-16a92b194fcd0f7afe12ca8d26718179 *DESCRIPTION
+4049726a4c4f198d975fe002d04b9e48 *DESCRIPTION
 15d87f8d4ecfd954c8dd3fc2b69a0cbb *LICENSE
 d3ca4a4a30db107bf214546993da18b0 *NAMESPACE
-6b2a9a5f5e91c9c5a8a1e3dfccd48163 *NEWS.md
+007006cb4fe442cfde4ed4fbf1489e38 *NEWS.md
 fc64572d16aa8abed873a2d06d5f9202 *R/S4-utils.R
 617ee40ffc60e9773ab6cb577795d5a3 *R/add_basic_meta.R
 60cae3f3a6b6937333174e993c62dc1e *R/add_characters.R
@@ -41,7 +41,7 @@ ae53887b412b4be1430e633ef1163955 *R/simmap.R
 78ad6d9378c8d09f85d70b4f62b176b6 *R/tbl_df.R
 f4b6cb1ca6b9aa652acfa20fd45c64bf *R/utils.R
 26bdb592ba52c26c5c72e2b7fa0103cc *README.md
-cc3ba87223fefdf73f1e3b6c23358061 *build/vignette.rds
+1ffc777e41ca42c036f29dd34447e34d *build/vignette.rds
 84b45265f4efcfb698335957ec44d7ba *inst/CITATION
 5b93ca7d234652c67049c98c84a77f1b *inst/WORDLIST
 53d9a35d9cd319712e03e7fbb708fa4e *inst/doc/S4.Rmd
@@ -145,12 +145,11 @@ b6aa85b700234cd7f7bdeb6a387e4676 *man/taxize_nexml.Rd
 48237ccd63c622e45f6ce13edbd3d9b3 *man/toPhylo.Rd
 78a7f421feb7208c58c9197ba4eb5edb *tests/spelling.R
 bbde9fbfa538d3160fff44967d1fb0dd *tests/test-all.R
-853b41159e31e64a801403e3142ec108 *tests/testthat/Rplots.pdf
 c64d6a3a0af9b631471c129a0957e626 *tests/testthat/conversions.R
 6f68db3a881fdbb5e0dfd5a68c165f8d *tests/testthat/geiger_test.R
 47bde26b1620dc77e8309d4246102c8e *tests/testthat/helper-RNeXML.R
 0a11f0ca45c7d531e3e3631ee8a9ca1a *tests/testthat/test_01_exported_util.R
-de18548eae79e2afd9d06ee942c76b61 *tests/testthat/test_01_utils.R
+ca733e6e0b5034244edf7c65eb359658 *tests/testthat/test_01_utils.R
 831365b04f052e195e869edb3dd4e9bf *tests/testthat/test_02_summary.R
 d2a1f07f597acaf42f5d159747bd6175 *tests/testthat/test_ape.R
 11363dfa842ebea09a74ad972a8b6e12 *tests/testthat/test_characters.R
