@@ -1,7 +1,7 @@
 Package: RNeXML
 Type: Package
 Title: Semantically Rich I/O for the 'NeXML' Format
-Version: 2.4.8
+Version: 2.4.9
 Authors@R: c(person("Carl", "Boettiger", role = c("cre", "aut"),
     email="cboettig@gmail.com", comment = c(ORCID="0000-0002-1642-628X")), 
     person("Scott", "Chamberlain", role ="aut", comment = c(ORCID="0000-0003-1444-9135")), 
@@ -20,7 +20,7 @@ VignetteBuilder: knitr
 Suggests: spelling, rdflib, geiger (>= 2.0), phytools (>= 0.3.93),
         knitr (>= 1.5), rfigshare (>= 0.3.0), knitcitations (>= 1.0.1),
         testthat (>= 0.10.0), rmarkdown (>= 0.3.3), xslt, covr,
-        taxalight
+        taxalight, progress
 Depends: R (>= 3.0.0), ape (>= 3.1), methods (>= 3.0.0)
 Imports: XML (>= 3.95), plyr (>= 1.8), reshape2 (>= 1.2.2), httr (>=
         0.3), uuid (>= 0.1-1), dplyr (>= 0.7.0), tidyr (>= 0.3.1),
@@ -44,7 +44,7 @@ X-schema.org-isPartOf: https://ropensci.org
 Language: en-US
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2022-10-19 21:58:06 UTC; cboettig
+Packaged: 2022-12-16 19:02:45 UTC; cboettig
 Author: Carl Boettiger [cre, aut] (<https://orcid.org/0000-0002-1642-628X>),
   Scott Chamberlain [aut] (<https://orcid.org/0000-0003-1444-9135>),
   Hilmar Lapp [aut] (<https://orcid.org/0000-0001-9107-0714>),
@@ -52,4 +52,4 @@ Author: Carl Boettiger [cre, aut] (<https://orcid.org/0000-0002-1642-628X>),
   Rutger Vos [aut] (<https://orcid.org/0000-0001-9254-7318>)
 Maintainer: Carl Boettiger <cboettig@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-10-19 22:27:55 UTC
+Date/Publication: 2022-12-16 20:00:05 UTC
