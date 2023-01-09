@@ -1,7 +1,7 @@
-568d61674086691b7fb1cb5521c7c857 *DESCRIPTION
+d1fe7e4a9a49933a06d8f18222efab06 *DESCRIPTION
 15d87f8d4ecfd954c8dd3fc2b69a0cbb *LICENSE
 50ff765901d190f50b2902e28b818c40 *NAMESPACE
-fca818c43cef8537dd779c769a60e333 *NEWS.md
+bc8e67ef217daf718be8cdf6b8d4f13b *NEWS.md
 3b26266a79aa7be66ca089052978cda7 *R/S4-utils.R
 617ee40ffc60e9773ab6cb577795d5a3 *R/add_basic_meta.R
 0892ffc02f7db111c55f014a44dc38d5 *R/add_characters.R
@@ -33,7 +33,7 @@ ea22b74789949c0aee569e7723171457 *R/nexml_get.R
 d615f93e38824b4b99547f9980201e7f *R/nexml_methods.R
 fb4f7834f086d1463b4b2ea12b895d5e *R/nexml_publish.R
 1efeb260bd2678453c2e86ada5c9d0f0 *R/nexml_read.R
-226d8c580a9651bbf87fd6a87e4f8862 *R/nexml_validate.R
+26ffdbb53b36d9a97a5a8295a12ad0d6 *R/nexml_validate.R
 2752c4a7b6f3983afc89d9d34cc60cce *R/nexml_write.R
 3320451ddd2d28c9103af5791aedd8df *R/prefixed-uris.R
 ae53887b412b4be1430e633ef1163955 *R/simmap.R
@@ -135,10 +135,10 @@ e31ce2ecf494fb019749f5fbae9bc0bf *man/nexml_figshare.Rd
 8870b15dc364067f1d46389e8abf312c *man/nexml_get.Rd
 047f7282c78133f948b4c507316bf040 *man/nexml_publish.Rd
 4b05c4f7535aa8c62bc618650aab7012 *man/nexml_read.Rd
-006dec7bb0b1700d3f93f23c3f029667 *man/nexml_validate.Rd
+c5b7fc4841b5b6b8a6838e6d890c65fd *man/nexml_validate.Rd
 e7a44f546bb677405c3858419c6d36ef *man/nexml_write.Rd
 24a6d3057367c0a59b27575ee62d765e *man/reset_id_counter.Rd
-e4cf31381c41154938347538abaecd4f *man/simmap_to_nexml.Rd
+cb2582542282bcbb63703d9a59910f5c *man/simmap_to_nexml.Rd
 9f640a0fad1c4b17e9315ad4c570f86a *man/slot-ResourceMeta-method.Rd
 bab3c0fc4210c564ef995edaf2912c5f *man/summary-nexml-method.Rd
 b6aa85b700234cd7f7bdeb6a387e4676 *man/taxize_nexml.Rd
@@ -146,7 +146,7 @@ b6aa85b700234cd7f7bdeb6a387e4676 *man/taxize_nexml.Rd
 78a7f421feb7208c58c9197ba4eb5edb *tests/spelling.R
 bbde9fbfa538d3160fff44967d1fb0dd *tests/test-all.R
 c64d6a3a0af9b631471c129a0957e626 *tests/testthat/conversions.R
-6f68db3a881fdbb5e0dfd5a68c165f8d *tests/testthat/geiger_test.R
+d394221bc71f775a69f4bba469dad8fd *tests/testthat/geiger_test.R
 5652e0e8bbc49383a4de12cacae0b670 *tests/testthat/helper-RNeXML.R
 0a11f0ca45c7d531e3e3631ee8a9ca1a *tests/testthat/test_01_exported_util.R
 93e4a7c1e64144d6f7e4fcbfabd2b3c5 *tests/testthat/test_01_utils.R
@@ -157,7 +157,7 @@ d2a1f07f597acaf42f5d159747bd6175 *tests/testthat/test_ape.R
 912cd2a406a1cf5ec32d7ae64567bf4d *tests/testthat/test_concatenate.R
 869bedaafcacaf1665808577d981f44e *tests/testthat/test_get_characters.R
 74cd1774ba8b63c324af7e1d2f1fb7cb *tests/testthat/test_get_level.R
-95ed5812e862fa8d83a3e403125bc9a3 *tests/testthat/test_global_ids.R
+ac4f82dbf37f04c87da06552962676f9 *tests/testthat/test_global_ids.R
 f74954c631e30db81f43d1c4aca25670 *tests/testthat/test_inheritance.R
 9ca26158864d37a871ec458a20d5c580 *tests/testthat/test_meta.R
 9531da36c21e9e63e4e24df20573faa5 *tests/testthat/test_meta_extract.R
